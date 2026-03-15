@@ -1,0 +1,160 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "name": "1142labs",
+  "public": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/fonts/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)\\.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)\\.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/research",
+      "destination": "/research.html"
+    },
+    {
+      "source": "/tools",
+      "destination": "/tools.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/archive",
+      "destination": "/archive.html"
+    },
+    {
+      "source": "/breakthroughs",
+      "destination": "/breakthroughs.html"
+    },
+    {
+      "source": "/creators",
+      "destination": "/creators.html"
+    },
+    {
+      "source": "/vision",
+      "destination": "/vision.html"
+    },
+    {
+      "source": "/resources",
+      "destination": "/resources.html"
+    },
+    {
+      "source": "/posters",
+      "destination": "/posters.html"
+    },
+    {
+      "source": "/chemlog",
+      "destination": "/chemlog.html"
+    },
+    {
+      "source": "/chemicals",
+      "destination": "/1142_chemicals.html"
+    },
+    {
+      "source": "/pdf-portal",
+      "destination": "/pdf_portal.html"
+    },
+    {
+      "source": "/socials",
+      "destination": "/socials.html"
+    },
+    {
+      "source": "/network",
+      "destination": "/socials.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/the-brain",
+      "destination": "/research",
+      "permanent": true
+    },
+    {
+      "source": "/the-engine",
+      "destination": "/tools",
+      "permanent": true
+    },
+    {
+      "source": "/the-creator",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/the-archive",
+      "destination": "/archive",
+      "permanent": true
+    }
+  ]
+}

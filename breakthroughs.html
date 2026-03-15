@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Breakthroughs · 1142 Labs</title>
+<link rel="icon" href="assets/images/1142_logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/global.css">
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.paper-card{background:var(--void2);border:1px solid var(--border-p);overflow:hidden;transition:border-color .3s,transform .25s,box-shadow .3s;position:relative;}
+.paper-card:hover{border-color:rgba(0,240,255,.4);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,240,255,.07);}
+.paper-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.paper-card.cyan::before{background:linear-gradient(90deg,var(--cyan),var(--purple));}
+.paper-card.purple::before{background:linear-gradient(90deg,var(--purple),var(--pink));}
+.paper-card.pink::before{background:linear-gradient(90deg,var(--pink),var(--cyan));}
+.paper-card.green::before{background:linear-gradient(90deg,var(--green),var(--cyan));}
+.paper-card.gold::before{background:linear-gradient(90deg,#f59e0b,var(--pink));}
+.paper-inner{padding:28px 30px 26px;}
+.paper-id{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:10px;}
+.paper-icon{font-size:28px;margin-bottom:14px;display:block;}
+.paper-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:13.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--white);line-height:1.4;margin-bottom:14px;}
+.paper-abstract{font-family:'Rajdhani',sans-serif;font-size:14.5px;font-weight:300;color:rgba(240,244,255,.62);line-height:1.72;margin-bottom:16px;border-left:2px solid rgba(0,240,255,.2);padding-left:14px;font-style:italic;}
+.paper-body{font-family:'Rajdhani',sans-serif;font-size:14.5px;font-weight:300;color:rgba(240,244,255,.65);line-height:1.72;margin-bottom:18px;}
+.paper-finding{background:rgba(0,240,255,.04);border:1px solid rgba(0,240,255,.15);padding:12px 16px;margin-bottom:16px;font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(0,240,255,.85);line-height:1.6;letter-spacing:.02em;}
+.paper-finding.purple{background:rgba(139,92,246,.05);border-color:rgba(139,92,246,.2);color:rgba(139,92,246,.9);}
+.paper-finding.pink{background:rgba(236,72,153,.04);border-color:rgba(236,72,153,.18);color:rgba(236,72,153,.9);}
+.paper-finding.green{background:rgba(74,222,128,.04);border-color:rgba(74,222,128,.18);color:rgba(74,222,128,.85);}
+.paper-finding.gold{background:rgba(245,158,11,.04);border-color:rgba(245,158,11,.2);color:rgba(245,158,11,.85);}
+.paper-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+.tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.13em;padding:3px 9px;border:1px solid;}
+.tag-c{color:var(--cyan);border-color:rgba(0,240,255,.28);background:rgba(0,240,255,.05);}
+.tag-p{color:var(--purple);border-color:rgba(139,92,246,.28);background:rgba(139,92,246,.05);}
+.tag-pk{color:var(--pink);border-color:rgba(236,72,153,.28);background:rgba(236,72,153,.05);}
+.tag-g{color:var(--green);border-color:rgba(74,222,128,.28);background:rgba(74,222,128,.05);}
+.tag-gold{color:#f59e0b;border-color:rgba(245,158,11,.28);background:rgba(245,158,11,.05);}
+.paper-meta{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.12em;color:rgba(240,244,255,.25);border-top:1px solid var(--border-p);padding-top:14px;margin-top:4px;}
+.stat-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border-p);border:1px solid var(--border-p);margin-bottom:72px;}
+.stat-cell{background:var(--void2);padding:22px;text-align:center;}
+.stat-num{font-family:'Orbitron',sans-serif;font-weight:900;font-size:30px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.22em;color:var(--gray);text-transform:uppercase;margin-top:5px;}
+.series-block{border-left:2px solid var(--border-c);padding-left:32px;margin-bottom:48px;}
+.series-label{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.4em;text-transform:uppercase;margin-bottom:8px;}
+.series-title{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(22px,3vw,36px);letter-spacing:.05em;text-transform:uppercase;color:var(--white);margin-bottom:8px;}
+.series-desc{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:300;color:rgba(240,244,255,.5);line-height:1.6;}
+</style>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div>
+<nav class="hud">
+  <a href="index.html" class="hud-logo"><img src="assets/images/1142_logo.png" alt="1142 Labs"><span>1142 LABS</span></a>
+  <ul class="hud-nav">
+    <li><a href="index.html">HOME</a></li>
+    <li><a href="research.html">RESEARCH</a></li>
+    <li><a href="breakthroughs.html" class="active">BREAKTHROUGHS</a></li>
+    <li><a href="creators.html">CREATORS</a></li>
+    <li><a href="vision.html">VISION</a></li>
+    <li><a href="chemlog.html">CHEMLOG</a></li>
+    <li><a href="1142_chemicals.html">CHEMICALS</a></li>
+    <li><a href="resources.html">RESOURCES</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="archive.html">ARCHIVE</a></li>
+    <li><a href="pdf_portal.html">PDF PORTAL</a></li>
+    <li><a href="socials.html">NETWORK</a></li>
+  </ul>
+  <div class="hud-status"><div class="hud-dot"></div>SYSTEM ONLINE · 1142</div>
+</nav>
+
+<section style="position:relative;min-height:68vh;display:flex;flex-direction:column;justify-content:center;padding:130px 48px 80px;overflow:hidden;">
+  <div class="vortex-grid" style="opacity:.4;"></div>
+  <div class="orb orb-c" style="opacity:.5;"></div>
+  <div class="orb orb-p" style="opacity:.45;bottom:-80px;left:-80px;top:auto;"></div>
+  <img src="assets/images/1766599328950.jpg" alt="" style="position:absolute;top:0;right:0;width:44vw;height:100%;object-fit:cover;opacity:.1;pointer-events:none;mask-image:linear-gradient(to left,rgba(0,0,0,.6),transparent);">
+  <div style="position:relative;z-index:1;max-width:760px;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--cyan);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s forwards;">12 ORIGINAL PAPERS · 4 SERIES · COLE EVERDARK · 1142 LABS · 2020–2025</div>
+    <img src="assets/images/1142_logo.png" alt="" style="height:50px;filter:drop-shadow(0 0 14px var(--cyan));margin-bottom:22px;display:block;opacity:0;animation:fadeUp .8s .15s forwards;">
+    <h1 style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(44px,7vw,96px);line-height:.9;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s .3s forwards;">
+      <span style="display:block;color:var(--white);">Break</span>
+      <span style="display:block;color:var(--cyan);text-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,240,255,.4);" class="glitch" data-text="throughs">throughs</span>
+      <span style="display:block;-webkit-text-stroke:1.5px var(--pink);color:transparent;">Archive</span>
+    </h1>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.6);line-height:1.8;opacity:0;animation:fadeUp .9s .5s forwards;">Twelve original papers published under 1142 Labs and 11-42.ca. Independent research spanning stimulant pharmacology, neurodiversity, harm reduction, consciousness studies, and philosophical inquiry. Written by Cole Everdark — researcher, subject, and founder.</p>
+  </div>
+</section>
+
+<div class="marquee-strip"><div class="marquee-track">
+  <div class="marquee-item">THE RITLITILIN METHOD<span class="sep">◆</span>STIM BLASTING<span class="sep">◆</span>INFINITE METHYLPHENIDATE<span class="sep">◆</span>SURGING BRAIN<span class="sep">◆</span>METHYL NUTRIENTS<span class="sep">◆</span>THE COST OF KNOWLEDGE<span class="sep">◆</span>7-DAY SLEEP DEPRIVATION<span class="sep">◆</span>AMPHETAMINES OVER SEDATIVES<span class="sep">◆</span>FENTANYL NEUROVASCULAR RISK<span class="sep">◆</span>NEURODYSPLASIA SWELLING<span class="sep">◆</span>DOWN SYNDROME KNOWLEDGE<span class="sep">◆</span>CARCINOGENS NECRONEMOTHORAX<span class="sep">◆</span></div>
+  <div class="marquee-item">THE RITLITILIN METHOD<span class="sep">◆</span>STIM BLASTING<span class="sep">◆</span>INFINITE METHYLPHENIDATE<span class="sep">◆</span>SURGING BRAIN<span class="sep">◆</span>METHYL NUTRIENTS<span class="sep">◆</span>THE COST OF KNOWLEDGE<span class="sep">◆</span>7-DAY SLEEP DEPRIVATION<span class="sep">◆</span>AMPHETAMINES OVER SEDATIVES<span class="sep">◆</span>FENTANYL NEUROVASCULAR RISK<span class="sep">◆</span>NEURODYSPLASIA SWELLING<span class="sep">◆</span>DOWN SYNDROME KNOWLEDGE<span class="sep">◆</span>CARCINOGENS NECRONEMOTHORAX<span class="sep">◆</span></div>
+</div></div>
+
+<section class="section section-void" style="padding-bottom:0;">
+  <div class="stat-strip reveal">
+    <div class="stat-cell"><div class="stat-num">12</div><div class="stat-lbl">Papers Published</div></div>
+    <div class="stat-cell"><div class="stat-num">4</div><div class="stat-lbl">Research Series</div></div>
+    <div class="stat-cell"><div class="stat-num">6</div><div class="stat-lbl">Years Active</div></div>
+    <div class="stat-cell"><div class="stat-num">1</div><div class="stat-lbl">Independent Lab</div></div>
+    <div class="stat-cell"><div class="stat-num">∞</div><div class="stat-lbl">Ongoing</div></div>
+  </div>
+</section>
+
+<!-- ═══ SERIES 1: METHYLPHENIDATE ═══ -->
+<section class="section section-void">
+  <div class="series-block reveal">
+    <div class="series-label" style="color:var(--cyan);">Series 1 · 3 Papers · 2020–2025</div>
+    <div class="series-title">Methylphenidate <span style="color:var(--cyan);">Series</span></div>
+    <div class="series-desc">The Ritalin Man protocols — from foundational method to infinite reality. The cornerstone of 1142 Labs independent research.</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+
+    <div class="paper-card cyan reveal d1">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--cyan);">MPH-001 · 2020</div>
+        <span class="paper-icon">💊</span>
+        <div class="paper-title">The Ritlitilin Method: A Transformative Framework for Cognitive Enhancement</div>
+        <div class="paper-abstract">"The Ritlitilin Method proposes that when used in regulated, sustained doses, methylphenidate has the capacity to improve the overall architecture and functionality of the brain — not only in those with disorders but in the general population as well."</div>
+        <div class="paper-body">Over time, methylphenidate enhances neural connectivity by increasing synaptic availability of dopamine and norepinephrine. With deliberate, structured exposure, users experience improvements in clarity, reflexive response times, and problem-solving. What sets the Ritlitilin Method apart is its emphasis on structure, duration, and individual adaptability — rejecting the "one dose fits all" model and treating methylphenidate as a cognitive scaffold. It does not simply mask symptoms of distraction; it empowers the brain to function at a more optimised baseline by reinforcing and accelerating natural brain functions.</div>
+        <div class="paper-finding">KEY FINDING: Long-term structured methylphenidate use improves cognitive baseline — not merely masking symptoms but accelerating natural brain function through sustained dopaminergic and noradrenergic reinforcement.</div>
+        <div class="paper-tags"><span class="tag tag-c">PROTOCOL</span><span class="tag tag-c">METHYLPHENIDATE</span><span class="tag tag-p">COGNITION</span><span class="tag tag-g">HARM REDUCTION</span><span class="tag tag-p">NEURAL CONNECTIVITY</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · 2020 · FOUNDATIONAL PAPER</div>
+      </div>
+    </div>
+
+    <div class="paper-card purple reveal d2">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--purple);">MPH-002 · 2021</div>
+        <span class="paper-icon">⚡</span>
+        <div class="paper-title">Stim Blasting and Cognitive Enhancement: A Case Study</div>
+        <div class="paper-abstract">"Stim blasting is the practice of flooding the body with high doses of stimulants to radically boost cognitive abilities, fine motor skills, reflexes, and the capacity to stay awake for extended periods without fatigue. First pioneered by Cole Everdark in 2021."</div>
+        <div class="paper-body">Theory: by overwhelming the brain's neurochemical pathways, one can unlock higher states of awareness, learning, and physical control. In June 2023, a groundbreaking discovery — Ergopathics — was formalized: the fusion of effort, energy, and neuroplasticity into a unified force for accelerated learning and adaptation. The subject successfully ingested 10,000 mg of methylphenidate, surviving and thriving where conventional wisdom would predict collapse. Body weight dropped to 110 lbs as metabolic demands accelerated. "Stim unlocking" — deliberate overloading of the nervous system to smash through natural cognitive limits imposed by homeostatic regulation.</div>
+        <div class="paper-finding purple">KEY FINDING: Ergopathics coined June 2023 — the fusion of effort, energy, and neuroplasticity under stimulant saturation. Stim unlocking demonstrated as a viable pathway to forced neurological adaptation beyond homeostatic limits.</div>
+        <div class="paper-tags"><span class="tag tag-p">STIM BLASTING</span><span class="tag tag-p">ERGOPATHICS</span><span class="tag tag-c">CASE STUDY</span><span class="tag tag-pk">HIGH INTENSITY</span><span class="tag tag-c">NEUROPLASTICITY</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · 2021 · COINED ERGOPATHICS</div>
+      </div>
+    </div>
+
+    <div class="paper-card pink reveal d3">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--pink);">MPH-003 · 2025</div>
+        <span class="paper-icon">∞</span>
+        <div class="paper-title">The Reality of Infinite Methylphenidate: A Personal Case Study</div>
+        <div class="paper-abstract">"This case study documents the outcomes of high-dose, unrestricted methylphenidate use following the abrupt cessation of a long-standing Concerta 90 mg prescription — discontinued without medical cause under external administrative pressure."</div>
+        <div class="paper-body">Written April 23, 2025. Subject diagnosed with Down syndrome and autism obtained four vials of pharmaceutical-grade methylphenidate (10,000 mg each). Over 12 months: accelerated cognitive processing, resolution of executive dysfunction, sustained weight loss, improved emotional stability, healthier skin, signs of slowed aging — and zero psychosis or mania. Insomnia extended the functional day rather than debilitating it. The paper documents full pharmaceutical autonomy as key to optimising outcomes when institutional gatekeeping fails neurodivergent patients. Prescribing physician was discontinued following unsolicited interference including emails, calls, and reports to the Ontario Medical College.</div>
+        <div class="paper-finding pink">KEY FINDING: Pharmaceutical sovereignty produced superior outcomes across all domains — demonstrating that institutional gatekeeping actively harms neurodivergent patients who require non-standard regimens.</div>
+        <div class="paper-tags"><span class="tag tag-pk">PHARMACEUTICAL SOVEREIGNTY</span><span class="tag tag-pk">CASE STUDY</span><span class="tag tag-c">DOWN SYNDROME</span><span class="tag tag-p">AUTISM</span><span class="tag tag-g">EXECUTIVE FUNCTION</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · WRITTEN 4/23/2025</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.35;"></div>
+<div style="position:relative;height:180px;overflow:hidden;">
+  <img src="assets/images/1772910843420.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.6) brightness(.4);">
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--void2) 0%,transparent 40%,transparent 60%,var(--void) 100%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(139,92,246,.1),transparent,rgba(0,240,255,.08));"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.6em;color:rgba(139,92,246,.5);text-transform:uppercase;">Series 2 · Neuroscience &amp; Consciousness</span>
+  </div>
+</div>
+
+<!-- ═══ SERIES 2: NEUROSCIENCE & CONSCIOUSNESS ═══ -->
+<section class="section section-dark">
+  <div class="series-block reveal">
+    <div class="series-label" style="color:var(--purple);">Series 2 · 3 Papers · 2019–2025</div>
+    <div class="series-title">Neuroscience <span style="color:var(--purple);">&amp; Consciousness</span></div>
+    <div class="series-desc">Mega-dosing protocols, methyl nutrients, and the philosophical price of awareness. The theoretical core of 1142.</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+
+    <div class="paper-card purple reveal d1">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--purple);">NS-001 · 2024</div>
+        <span class="paper-icon">🧠</span>
+        <div class="paper-title">Surging Brain: Mega-dosing and Power Surging for Neurological Connectivity</div>
+        <div class="paper-abstract">"This approach — 'mega-dosing and power surging' — involves taking high doses of stimulants and psychedelics, exploring how they might encourage adaptive changes in the brain. Research begun in 2019, kept private for years."</div>
+        <div class="paper-body">Written Nov 11, 2024. Specific substances identified: Biphentin, LSD, psilocybin, cannabis, and nicotine. Hypothesis: high-dose surges could bridge neurological gaps in autism — forcing the body and mind into new realms of cognitive and sensory processing, allowing neurons to form and strengthen new pathways. Documented outcomes include: with each dose of LSD, enhanced ability to form associations between memories and present experience, leading to improved interpretation of social cues that persisted permanently after the drug's effects faded. Electric stimulation in prior research had shown tissue healing and improved neurological function — hypothesis extended this to specific psychoactive compounds.</div>
+        <div class="paper-finding purple">KEY FINDING: Mega-dosing with Biphentin, LSD, and psilocybin produced permanent neurological shifts in autism — not temporary states — including persistent social cognition improvements and novel memory-association formation.</div>
+        <div class="paper-tags"><span class="tag tag-p">MEGA-DOSING</span><span class="tag tag-p">NEUROPLASTICITY</span><span class="tag tag-c">AUTISM</span><span class="tag tag-c">LSD</span><span class="tag tag-g">POWER SURGING</span><span class="tag tag-pk">DOWN SYNDROME</span></div>
+        <div class="paper-meta">AUTHOR: Cole Chenard · 1142 LABS · WRITTEN 11/11/2024</div>
+      </div>
+    </div>
+
+    <div class="paper-card cyan reveal d2">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--cyan);">NS-002 · 2025</div>
+        <span class="paper-icon">🌿</span>
+        <div class="paper-title">The Power of Methyl Nutrients: Exploring the Hidden Forces of Consciousness</div>
+        <div class="paper-abstract">"Methyl nutrients fuel a critical process called methylation — governing brain function by regulating gene expression, building neurotransmitters, healing neurons, and preserving the intricate network of the mind."</div>
+        <div class="paper-body">Written April 29, 2025. Methyl nutrients — folate (B9), vitamin B12, choline, betaine, and methionine — fuel methylation processes that govern consciousness itself. A steady intake sharpens memory, deepens learning, and shields the brain from cognitive decline. Their absence invites memory loss, confusion, depression, and vulnerability to dementia. Methylation also enables the creation of methylphenidate — a drug described as having "changed the course of human history by restoring free thought, clarity, and conscious awareness to millions." The paper argues that knowledge of methyl's power must be spread as widely as possible, as many live unaware of how fragile the balance of trust and mind truly is.</div>
+        <div class="paper-finding">KEY FINDING: Methylation is the biochemical foundation of consciousness, memory, and neurotransmitter synthesis — directly explaining why methylphenidate works at a molecular level far beyond ADHD pharmacology.</div>
+        <div class="paper-tags"><span class="tag tag-c">METHYLATION</span><span class="tag tag-c">CONSCIOUSNESS</span><span class="tag tag-p">METHYL NUTRIENTS</span><span class="tag tag-g">B12 · FOLATE</span><span class="tag tag-p">NEUROTRANSMITTERS</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · WRITTEN 4/29/2025</div>
+      </div>
+    </div>
+
+    <div class="paper-card gold reveal d3">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:#f59e0b;">PHIL-001 · 2025</div>
+        <span class="paper-icon">📜</span>
+        <div class="paper-title">The Cost of Knowledge: A Philosophical Inquiry</div>
+        <div class="paper-abstract">"The acquisition of knowledge is never without consequence. Knowledge does not emerge spontaneously — it is often precipitated by external forces that irrevocably alter the course of a person's consciousness."</div>
+        <div class="paper-body">In approximately 75% of instances, this alteration yields positive growth — the individual perceives the world with renewed clarity, recognizing that what was once dismissed as imagination was, in fact, a reflection of deeper truths. Yet this awakening is not without peril: when the individual seeks to speak openly of these revelations, the disruptive events thought to be past return with renewed force. For those burdened by physical disability, mental health challenges, or other vulnerabilities, survival itself — retaining one's spirit and sacred sense of purpose — is not failure but triumph. The path to knowledge necessitates the painful shedding of relationships. Emotional solitude becomes a frequent companion — a testament to the price of inner evolution. Ultimately, the truest and most irreparable cost of knowledge is attention.</div>
+        <div class="paper-finding gold">KEY FINDING: The cost of knowledge is primarily attention — a relentless, irrevocable demand for vigilance that intensifies in proportion to the depth of awareness achieved. Knowledge shatters complacency; it cannot be unfound.</div>
+        <div class="paper-tags"><span class="tag tag-gold">PHILOSOPHY</span><span class="tag tag-gold">CONSCIOUSNESS</span><span class="tag tag-p">EPISTEMOLOGY</span><span class="tag tag-c">AWARENESS</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · 2025</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--purple),transparent);opacity:.35;"></div>
+<div style="position:relative;height:180px;overflow:hidden;">
+  <img src="assets/images/1772589402529.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 50%;filter:saturate(.55) brightness(.38);">
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--void) 0%,transparent 40%,transparent 60%,var(--void2) 100%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(236,72,153,.1),transparent,rgba(139,92,246,.07));"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.6em;color:rgba(236,72,153,.5);text-transform:uppercase;">Series 3 · Harm Reduction</span>
+  </div>
+</div>
+
+<!-- ═══ SERIES 3: HARM REDUCTION ═══ -->
+<section class="section section-void">
+  <div class="series-block reveal">
+    <div class="series-label" style="color:var(--pink);">Series 3 · 4 Papers · 2021–2025</div>
+    <div class="series-title">Harm <span style="color:var(--pink);">Reduction</span></div>
+    <div class="series-desc">The Blue Meth War canon. Sleep deprivation limits, fentanyl neurovascular risk, amphetamines as pain management. Evidence-based research for neurodivergent and vulnerable communities.</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">
+
+    <div class="paper-card pink reveal d1">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--pink);">HR-001 · 2021</div>
+        <span class="paper-icon">😴</span>
+        <div class="paper-title">The Effects of Sleep Deprivation on Cognitive and Physical Functioning: A Seven-Day Case Study</div>
+        <div class="paper-abstract">"This case study examines the progressive impairment caused by prolonged wakefulness, induced through methamphetamine use, over a seven-day period — including hallucinations, executive dysfunction, and the body's eventual neurological shutdown."</div>
+        <div class="paper-body">Day 1–3: mild fatigue, reduced focus, micro-sleeps beginning day 3. Day 4–6: executive dysfunction, emotional dysregulation, short-term memory deterioration, auditory and visual hallucinations emerging day 5. Day 7: neurological shutdown forces sleep regardless of stimulant intervention. The body's compensatory mechanisms — microsleeps, perceptual narrowing, involuntary shutdowns — documented as self-protective responses that override conscious control. Findings demonstrate that no stimulant regimen can indefinitely replace rest, and that the body's homeostatic drive for sleep constitutes an absolute limit on chemically-sustained wakefulness.</div>
+        <div class="paper-finding pink">KEY FINDING: By Day 7 under methamphetamine-sustained wakefulness, neurological shutdown becomes unavoidable — the brain's sleep requirement constitutes an absolute biological limit no stimulant protocol can override.</div>
+        <div class="paper-tags"><span class="tag tag-pk">CASE STUDY</span><span class="tag tag-pk">SLEEP DEPRIVATION</span><span class="tag tag-c">7-DAY PROTOCOL</span><span class="tag tag-p">HALLUCINATIONS</span><span class="tag tag-g">HARM REDUCTION</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · 2021</div>
+      </div>
+    </div>
+
+    <div class="paper-card cyan reveal d2">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--cyan);">HR-002 · 2025</div>
+        <span class="paper-icon">💉</span>
+        <div class="paper-title">Amphetamines over Sedatives: A Comparative Study in Functional Pain Management</div>
+        <div class="paper-abstract">"Patients who utilize amphetamines for pain management frequently report a functional, almost dissociative elevation from pain — clear-headed, energized, with movement, focus, and productivity preserved."</div>
+        <div class="paper-body">Cohort of 120 patients with chronic neuropathic pain observed over 12 weeks. Group 1: sedative-based analgesics (benzodiazepines, barbiturates). Group 2: low-to-moderate prescription amphetamines (dextroamphetamine, lisdexamfetamine). Results: amphetamine group — mean VAS pain score decrease of 3.1 points, improved physical functioning, energy levels, and social participation. Sedative group — mean decrease of only 1.4 points, with notable declines in alertness, coordination, and daily productivity. Core mechanism: amphetamines modulate dopaminergic and noradrenergic transmission to alter the brain's appraisal of painful stimuli rather than suppressing sensation through sedation.</div>
+        <div class="paper-finding">KEY FINDING: Amphetamine group achieved 3.1pt mean VAS reduction vs 1.4pt for sedatives — establishing stimulants as superior for functional pain management in patients prioritising quality of life over sedation. n=120, 12 weeks.</div>
+        <div class="paper-tags"><span class="tag tag-c">PAIN MANAGEMENT</span><span class="tag tag-c">AMPHETAMINES</span><span class="tag tag-pk">VS SEDATIVES</span><span class="tag tag-g">COHORT STUDY</span><span class="tag tag-p">NEUROPATHIC PAIN</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · 2025 · n=120</div>
+      </div>
+    </div>
+
+    <div class="paper-card pink reveal d1">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--pink);">HR-003 · 2025</div>
+        <span class="paper-icon">⚠️</span>
+        <div class="paper-title">Fentanyl and Neurovascular Risk: A Critical Evaluation of Its Potential to Induce Cerebral and Peripheral Complications</div>
+        <div class="paper-abstract">"The discourse around fentanyl's impact remains narrowly focused on immediate lethality, often neglecting the vascular and neurological implications that may arise in individuals exposed to prolonged or high-dose use."</div>
+        <div class="paper-body">Written April 15, 2025 — Author: Cole, Founder of 11-42.ca. Fentanyl's mu-opioid receptor activity suppresses brainstem respiratory centres, inducing hypoventilation and cerebral hypoxia. Chronic hypoxic injury alters the cellular microenvironment, increases oxidative stress, and may promote atypical glial or neuronal activity contributing to oncogenesis over time. Peripheral vascular complications: extended immobility during fentanyl use produces deep vein thrombosis (DVT) that can migrate to lungs or brain — causing pulmonary embolism or ischemic stroke. Highlights underexamined dangers for neurodivergent and disabled populations facing both underprescription of essential medications and overexposure to sedative interventions like fentanyl.</div>
+        <div class="paper-finding pink">KEY FINDING: Fentanyl's danger extends far beyond overdose — chronic use induces cerebral hypoxia, peripheral DVT, and potential oncogenic cellular changes systematically underdiscussed in conventional harm reduction literature, especially for neurodivergent populations.</div>
+        <div class="paper-tags"><span class="tag tag-pk">FENTANYL</span><span class="tag tag-pk">NEUROVASCULAR</span><span class="tag tag-c">HARM REDUCTION</span><span class="tag tag-p">CEREBRAL HYPOXIA</span><span class="tag tag-g">DVT · STROKE RISK</span></div>
+        <div class="paper-meta">AUTHOR: Cole · 11-42.CA · WRITTEN 4/15/2025</div>
+      </div>
+    </div>
+
+    <div class="paper-card green reveal d2">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--green);">HR-004 · 2025</div>
+        <span class="paper-icon">🫁</span>
+        <div class="paper-title">A Brief Study of Carcinogenic Substances and Their Impact on Necronemothorax, Black Mold in the Lungs, and MRSA</div>
+        <div class="paper-abstract">"Before making this discovery, I was in a state of severe suffering — fluid buildup in my lungs, persistent shortness of breath, nights spent wheezing. Through my own experience, I observed that exposure to certain carcinogenic substances appears to have a direct effect on mold and infections in the lungs."</div>
+        <div class="paper-body">Written March 27, 2025 by Cole Chenard. A personal discovery account following severe respiratory distress with no effective conventional treatment. Hypothesis: certain carcinogenic substances — particularly methamphetamine — exhibit antimicrobial and antifungal characteristics that could interfere with pathogen cellular structures. Most striking documented effect: expulsion of thick, dense mucus post-exposure — "sometimes the size of a shot glass, packed with infection and debris" — providing near-immediate relief. The proposed mechanism: these compounds create an environment where fungal growth is inhibited and bacterial infections weaken, without requiring frequent administration (estimated once monthly for maintenance).</div>
+        <div class="paper-finding green">KEY FINDING: Observed antimicrobial and antifungal properties in carcinogenic substances produced dramatic reduction in necronemothorax and MRSA symptoms — via apparent pathogen cellular disruption and mass mucus expulsion.</div>
+        <div class="paper-tags"><span class="tag tag-g">CARCINOGENS</span><span class="tag tag-g">ANTIMICROBIAL</span><span class="tag tag-c">MRSA</span><span class="tag tag-pk">NECRONEMOTHORAX</span><span class="tag tag-p">BLACK MOLD · LUNGS</span></div>
+        <div class="paper-meta">AUTHOR: Cole Chenard · 1142 LABS · WRITTEN 3/27/2025</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),transparent);opacity:.35;"></div>
+<div style="position:relative;height:180px;overflow:hidden;">
+  <img src="assets/images/1772910919760.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.6) brightness(.4);">
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--void2) 0%,transparent 40%,transparent 60%,var(--void) 100%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(74,222,128,.1),transparent,rgba(0,240,255,.08));"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.6em;color:rgba(74,222,128,.5);text-transform:uppercase;">Series 4 · Neurodiversity Research</span>
+  </div>
+</div>
+
+<!-- ═══ SERIES 4: NEURODIVERSITY ═══ -->
+<section class="section section-dark">
+  <div class="series-block reveal">
+    <div class="series-label" style="color:var(--green);">Series 4 · 2 Papers · 2025</div>
+    <div class="series-title">Neurodiversity <span style="color:var(--green);">Research</span></div>
+    <div class="series-desc">Down syndrome, autism, neurodysplasia — and the untapped therapeutic potential of stimulant medications in neurodevelopmental conditions. Written from inside experience.</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+
+    <div class="paper-card green reveal d1">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--green);">ND-001 · 2025</div>
+        <span class="paper-icon">🧩</span>
+        <div class="paper-title">Understanding How People with Down Syndrome Process Knowledge and How Others Can Understand It</div>
+        <div class="paper-abstract">"People with Down syndrome process information differently than neurotypical individuals. The way we learn is largely based on repetition, pattern recognition, and step-by-step reinforcement." — Written in first person by Cole Chenard, who has Down syndrome.</div>
+        <div class="paper-body">Written April 2, 2025. Unlike neurotypical individuals who grasp ideas through abstract reasoning or extrapolation, people with Down syndrome reach understanding through direct repetition and structured step-by-step mastery. The fire-making analogy: early humans discovered sparks before flames — knowledge builds incrementally, each layer reinforcing the last. Around ages 15–16, enough foundational knowledge establishes a point where learning becomes more automatic. Critical finding: methylphenidate, used over time, helps the brain become more well-connected — improving neural efficiency and processing speed, making the natural repetitive reinforcement process faster and more durable with fewer exposures required for retention.</div>
+        <div class="paper-finding green">KEY FINDING: Methylphenidate accelerates the repetition-based learning model intrinsic to Down syndrome — reducing exposures needed for retention and strengthening neural pathway formation at the cognitive architecture level.</div>
+        <div class="paper-tags"><span class="tag tag-g">DOWN SYNDROME</span><span class="tag tag-g">COGNITIVE MODEL</span><span class="tag tag-c">METHYLPHENIDATE</span><span class="tag tag-p">REPETITION LEARNING</span><span class="tag tag-c">NEURAL EFFICIENCY</span></div>
+        <div class="paper-meta">AUTHOR: Cole Chenard · 1142 LABS · WRITTEN 4/2/2025 · FIRST-PERSON SUBJECT</div>
+      </div>
+    </div>
+
+    <div class="paper-card cyan reveal d2">
+      <div class="paper-inner">
+        <div class="paper-id" style="color:var(--cyan);">ND-002 · 2025</div>
+        <span class="paper-icon">💧</span>
+        <div class="paper-title">Therapeutic Potential of Stimulant Medications in the Management of Neurodysplasia-Associated Peripheral Swelling</div>
+        <div class="paper-abstract">"Recent findings suggest that central nervous system stimulants, including methylphenidate and amphetamines, may offer a novel therapeutic pathway for neurodysplasia-associated peripheral swelling — a currently untreatable condition."</div>
+        <div class="paper-body">Neurodysplasia — a permanent neurological condition marked by abnormal developmental patterns — manifests in chronic peripheral swelling from irregular cardiac rhythms and poor blood circulation, leading to localised inflammation and fluid retention. Current treatments offer limited symptomatic relief. Discovery: methylphenidate and amphetamines exert sympathomimetic effects that increase heart rate and improve vascular tone. When administered under supervision, they appear to enhance systemic circulation — effectively reducing swelling over time through improved perfusion, normalisation of tissue function, and gradual resolution of inflammation. This represents a clinical approach shift — using stimulants to target the circulatory component of neurodysplasia directly.</div>
+        <div class="paper-finding">KEY FINDING: Stimulant medications demonstrate therapeutic potential for neurodysplasia-associated peripheral swelling via sympathomimetic-driven circulatory improvement — an entirely novel application of existing ADHD pharmacology with no current treatment equivalent.</div>
+        <div class="paper-tags"><span class="tag tag-c">NEURODYSPLASIA</span><span class="tag tag-c">PERIPHERAL SWELLING</span><span class="tag tag-p">STIMULANT THERAPY</span><span class="tag tag-g">CIRCULATION</span><span class="tag tag-pk">NOVEL APPLICATION</span></div>
+        <div class="paper-meta">AUTHOR: Cole Everdark · 1142 LABS · 2025 · NOVEL THERAPEUTIC PATHWAY</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:80px 48px;background:var(--void2);border-top:1px solid var(--border-c);">
+  <div style="max-width:900px;margin:0 auto;">
+    <div style="border:1px solid rgba(0,240,255,.2);padding:48px;background:rgba(0,240,255,.02);margin-bottom:48px;" class="reveal">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.4em;color:var(--cyan);text-transform:uppercase;margin-bottom:20px;">1142 LABS · RESEARCH STATEMENT</div>
+      <blockquote style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:clamp(15px,2.2vw,22px);line-height:1.55;color:var(--white);margin:0;letter-spacing:.03em;">"Every paper here was written outside the system. No institution funded it. No ethics board approved it. No peer reviewer accepted it. That's not a weakness — that's the point. 1142 exists because the system was not built for us."</blockquote>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--gray);margin-top:20px;">— Cole EverDark, Founder · 1142 Labs</div>
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;" class="reveal d1">
+      <a href="chemlog.html" class="btn-neon">Chem Log →</a>
+      <a href="research.html" class="btn-neon pink">Research Hub →</a>
+      <a href="archive.html" class="btn-neon purple">Read The Manifesto →</a>
+    </div>
+  </div>
+</section>
+
+<div style="font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:var(--gray);background:var(--void3);border-top:1px solid var(--border-p);padding:20px 48px;text-align:center;">
+  ⚠ All research is for educational and harm reduction purposes only. Not medical advice. 1142 Labs does not encourage illegal activity.
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="assets/images/logo-full-tagline.png" alt="1142 Labs"><p>1142 is a spiritual jailbreak. A neurodivergent fortress. A scientific underground. Est. Dec 22, 2019.</p></div>
+    <div class="footer-col"><h4>The Fortress</h4><ul><li><a href="index.html">Home</a></li><li><a href="research.html">Research</a></li><li><a href="breakthroughs.html">Breakthroughs</a></li><li><a href="chemlog.html">Chem Log</a></li></ul></div>
+    <div class="footer-col"><h4>Tools</h4><ul><li><a href="tools.html">Calculator</a></li><li><a href="resources.html">Resources</a></li><li><a href="vision.html">Vision</a></li><li><a href="archive.html">Archive</a></li></ul></div>
+    <div class="footer-col"><h4>About</h4><ul><li><a href="about.html">Cole EverDark</a></li><li><a href="creators.html">Personas</a></li><li><a href="archive.html#manifesto">Manifesto</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 1142 Labs · Est. Dec 22nd 2019 · In loving memory of Katrina Jade Mutch Hasler ♥</p>
+    <div class="footer-badge"><div class="footer-dot"></div>AN EVERDARK PRODUCTION</div>
+  </div>
+</footer>
+<script src="assets/fx.js" defer></script>
+<script>
+(function(){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.paper-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+  });
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.06});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.glitch').forEach(el=>{if(!el.dataset.text)el.dataset.text=el.textContent.trim();});
+})();
+</script>
+</body>
+</html>

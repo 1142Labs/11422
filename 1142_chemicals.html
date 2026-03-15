@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1142 LABS — CHEMICALS OF STUDY</title>
+<link rel="icon" href="assets/images/1142_logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/global.css">
+<style>
+
+  :root {
+    --void: #030308;
+    --deep: #06060f;
+    --panel: #0a0a1a;
+    --border: rgba(255,255,255,0.07);
+    --acid: #c8ff00;
+    --nexus: #ff2d78;
+    --myco: #a855f7;
+    --peyote: #f97316;
+    --dmt: #00e5ff;
+    --dob: #ff6b35;
+    --mda: #ff1493;
+    --pcp: #39ff14;
+    --glow: rgba(200,255,0,0.12);
+    --text: #e8e8f0;
+    --muted: #6b6b8a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── CANVAS BACKGROUND ── */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+
+  .header-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    animation: fadeUp 1s ease forwards;
+    opacity: 0;
+  }
+
+  .header-title {
+    font-family: 'Syncopate', sans-serif;
+    font-weight: 700;
+    font-size: clamp(28px, 6vw, 72px);
+    line-height: 0.95;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 0%, var(--acid) 40%, var(--dmt) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 1s 0.2s ease forwards;
+    opacity: 0;
+  }
+
+  .header-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 4px;
+    margin-top: 14px;
+    animation: fadeUp 1s 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  .header-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--acid), transparent);
+    margin: 30px auto 0;
+    animation: fadeUp 1s 0.6s ease forwards;
+    opacity: 0;
+  }
+
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 20px 40px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--acid);
+    color: var(--acid);
+    background: rgba(200,255,0,0.05);
+    box-shadow: 0 0 12px rgba(200,255,0,0.15);
+  }
+
+  /* ── GRID ── */
+  .grid {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+    padding: 0 2px 2px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* ── CARD ── */
+  .card {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), border-color 0.3s;
+    animation: cardIn 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  .card:hover {
+    border-color: var(--c);
+    transform: translateY(-4px);
+    z-index: 5;
+  }
+
+  .card:hover .card-glow {
+    opacity: 1;
+  }
+
+  .card:hover .mol-canvas {
+    animation-play-state: running;
+  }
+
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, var(--glow-c, rgba(200,255,0,0.08)) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  /* ── MOLECULE CANVAS ── */
+  .mol-canvas {
+    display: block;
+    width: 100%;
+    height: 180px;
+  }
+
+  /* ── CARD CONTENT ── */
+  .card-body {
+    padding: 20px 22px 22px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .card-name {
+    font-family: 'Syncopate', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 1px;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  .card-alias {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    margin-top: 3px;
+    opacity: 0.6;
+  }
+
+  .card-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 4px 8px;
+    border: 1px solid var(--c);
+    color: var(--c);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .duration-bar {
+    margin: 14px 0 10px;
+  }
+
+  .duration-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .duration-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .duration-fill {
+    height: 100%;
+    background: var(--c);
+    border-radius: 2px;
+    box-shadow: 0 0 8px var(--c);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .card.visible .duration-fill {
+    transform: scaleX(1);
+  }
+
+  .duration-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--c);
+    margin-top: 5px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(232,232,240,0.7);
+    margin-bottom: 14px;
+  }
+
+  /* ── EXPAND BUTTON ── */
+  .expand-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--c);
+    background: transparent;
+    border: 1px solid var(--c);
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    width: 100%;
+  }
+
+  .expand-btn:hover {
+    background: var(--c);
+    color: #000;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(3,3,8,0.92);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    backdrop-filter: blur(6px);
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--deep);
+    border: 1px solid var(--border);
+    max-width: 680px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(30px) scale(0.97);
+    transition: transform 0.4s cubic-bezier(0.23,1,0.32,1);
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-top {
+    position: sticky;
+    top: 0;
+    background: var(--deep);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+  }
+
+  .modal-title {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--mc, #fff);
+  }
+
+  .modal-close {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .modal-close:hover {
+    border-color: #fff;
+    color: #fff;
+  }
+
+  .modal-body {
+    padding: 24px;
+  }
+
+  .modal-section {
+    margin-bottom: 26px;
+  }
+
+  .modal-section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--mc, var(--muted));
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-text {
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgba(232,232,240,0.82);
+  }
+
+  .effects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .effect-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 7px 10px;
+    border-left: 2px solid var(--mc, var(--acid));
+    background: rgba(255,255,255,0.03);
+    color: rgba(232,232,240,0.8);
+  }
+
+  .modal-canvas-wrap {
+    height: 120px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .modal-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 60px 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--void); }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+
+/* ── SITE INTEGRATION OVERRIDES ── */
+body { background: var(--void, #0A0A0A); padding-top: 72px; }
+.site-footer { margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<nav class="hud">
+  <a href="index.html" class="hud-logo">
+    <img src="assets/images/1142_logo.png" alt="1142 Labs">
+    <span>1142 LABS</span>
+  </a>
+  <ul class="hud-nav">
+    <li><a href="index.html">HOME</a></li>
+    <li><a href="research.html">RESEARCH</a></li>
+    <li><a href="breakthroughs.html">BREAKTHROUGHS</a></li>
+    <li><a href="creators.html">CREATORS</a></li>
+    <li><a href="vision.html">VISION</a></li>
+    <li><a href="chemlog.html">CHEMLOG</a></li>
+    <li><a href="1142_chemicals.html" class="active">CHEMICALS</a></li>
+    <li><a href="resources.html">RESOURCES</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="archive.html">ARCHIVE</a></li>
+    <li><a href="pdf_portal.html">PDF PORTAL</a></li>
+    <li><a href="socials.html">NETWORK</a></li>
+  </ul>
+  <div class="hud-status">
+    <div class="hud-dot"></div>
+    SYSTEM ONLINE · 1142
+  </div>
+</nav>
+
+
+
+<canvas id="bg-canvas"></canvas>
+
+<header>
+  <div class="header-tag">1142 · Research Archive · Classified</div>
+  <h1 class="header-title">CHEMICALS<br>OF STUDY</h1>
+  <p class="header-sub">[ 8 substances · psychedelic class · field notes ]</p>
+  <div class="header-line"></div>
+</header>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterCards('all', this)">ALL</button>
+  <button class="filter-btn" onclick="filterCards('classic', this)">CLASSIC</button>
+  <button class="filter-btn" onclick="filterCards('phenethylamine', this)">2C-x CLASS</button>
+  <button class="filter-btn" onclick="filterCards('tryptamine', this)">TRYPTAMINES</button>
+  <button class="filter-btn" onclick="filterCards('dissociative', this)">DISSOCIATIVES</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  1142 · CHEMICALS OF STUDY · FOR EDUCATIONAL PURPOSES ONLY<br>
+  <span style="opacity:0.4;margin-top:6px;display:block">KNOWLEDGE IS NOT ENDORSEMENT</span>
+</footer>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-top">
+      <div class="modal-title" id="modal-title"></div>
+      <button class="modal-close" onclick="closeModalDirect()">[ CLOSE ]</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const chemicals = [
+  {
+    id: 'lsd',
+    name: 'LSD',
+    alias: '"Acid" · Lysergic Acid Diethylamide',
+    badge: 'LYSERGAMIDE',
+    class: 'classic',
+    color: '#c8ff00',
+    duration: '8–12 hours',
+    durationPct: 0.85,
+    desc: 'The archetype. Synthesized by Albert Hofmann in 1938, its psychedelic properties discovered accidentally in 1943. One of the most potent psychoactive compounds known.',
+    history: 'Albert Hofmann first synthesized LSD-25 in 1938 at Sandoz Laboratories while researching ergot alkaloids. Its psychedelic properties were discovered on April 19, 1943 — "Bicycle Day" — when Hofmann accidentally absorbed a small amount through his fingertips. Sandoz later marketed it as "Delysid" for psychiatric research throughout the 1950s–60s. It became central to the counterculture movement before being scheduled in 1968.',
+    effects: ['Geometric hallucinations', 'Ego dissolution', 'Synesthesia', 'Time distortion', 'Emotional amplification', 'Pattern recognition', 'Profound empathy', 'Altered thought loops'],
+    knowledge: 'Acts primarily as a 5-HT2A agonist. Doses measured in micrograms (50–200µg). No physical toxicity at normal doses. Set and setting critical. Tolerance builds rapidly and cross-tolerates with psilocybin and mescaline.',
+    molPoints: 26
+  },
+  {
+    id: '2cb',
+    name: '2C-B',
+    alias: '"Nexus" · 4-Bromo-2,5-dimethoxyphenethylamine',
+    badge: 'PHENETHYLAMINE',
+    class: 'phenethylamine',
+    color: '#ff2d78',
+    duration: '4–6 hours',
+    durationPct: 0.45,
+    desc: 'Synthesized by Alexander Shulgin in 1974. Known for combining psychedelic visuals with entactogenic warmth. Considered by many the ideal recreational psychedelic.',
+    history: 'Developed by Alexander "Sasha" Shulgin in 1974 and detailed in his landmark text PiHKAL (1991). Originally sold legally as a substitute for MDMA after the scheduling of MDA. Particularly popular in European rave culture during the 1990s. Shulgin considered it among his most successful creations.',
+    effects: ['Rich CEV/OEV visuals', 'Heightened sensory pleasure', 'Euphoria', 'Body warmth', 'Enhanced music appreciation', 'Mild empathy', 'Sexual enhancement', 'Clear-headed lucidity'],
+    knowledge: 'Active at 12–25mg. 5-HT2A/2B/2C agonist with dopamine and alpha-adrenergic activity. Notably dose-sensitive: threshold, recreational, and intense experiences separated by just milligrams. Duration shorter than LSD making it more manageable.',
+    molPoints: 18
+  },
+  {
+    id: 'psilocybin',
+    name: 'PSILOCYBIN',
+    alias: '"Magic Mushrooms" · 4-PO-DMT',
+    badge: 'TRYPTAMINE',
+    class: 'tryptamine',
+    color: '#a855f7',
+    duration: '4–6 hours',
+    durationPct: 0.45,
+    desc: 'The original sacrament. Found in 200+ species of fungi globally. Used ceremonially for millennia. Psilocybin dephosphorylates to psilocin — the active compound — in the body.',
+    history: 'Indigenous Mesoamerican cultures used psilocybin mushrooms ("teonanácatl") in religious ceremonies for thousands of years. R. Gordon Wasson participated in a Mazatec ritual in 1955, later publishing in LIFE magazine (1957). Albert Hofmann isolated psilocybin in 1958. Research halted after 1970 scheduling but resumed aggressively in the 2010s, with major trials at Johns Hopkins and NYU showing efficacy for depression and addiction.',
+    effects: ['Introspective visions', 'Emotional breakthroughs', 'Nature connectedness', 'Ego death (high dose)', 'Laughter and wonder', 'Philosophical insight', 'Visual fractals', 'Time dilation'],
+    knowledge: 'Prodrug of psilocin. Typical doses 1–5g dried mushrooms (1.5–35mg psilocybin). Cross-tolerates with LSD. Currently in Phase 2/3 clinical trials for treatment-resistant depression, PTSD, and addiction. Oregon legalized supervised psilocybin services in 2023.',
+    molPoints: 20
+  },
+  {
+    id: 'peyote',
+    name: 'PEYOTE',
+    alias: '"The Sacred Cactus" · Mescaline',
+    badge: 'PHENETHYLAMINE',
+    class: 'classic',
+    color: '#f97316',
+    duration: '8–12 hours',
+    durationPct: 0.85,
+    desc: 'A small, spineless cactus native to Mexico and southwestern Texas. Contains mescaline as its primary alkaloid. Considered sacred by the Huichol, Rarámuri, and Native American Church.',
+    history: 'Peyote use in indigenous ritual dates back at least 5,700 years, evidenced by archaeological finds in Texas. The Native American Church, incorporating peyote ceremonies, was formally organized in 1918. Mescaline was isolated by Arthur Heffter in 1897 and synthesized by Ernst Späth in 1919. Aldous Huxley\'s "The Doors of Perception" (1954) described his mescaline experience and became enormously influential.',
+    effects: ['Complex colorful visions', 'Deep spiritual connection', 'Nausea (onset)', 'Profound introspection', 'Sensory enhancement', 'Time standing still', 'Geometric patterns', 'Ancestral feeling'],
+    knowledge: 'Active alkaloid mescaline (3,4,5-trimethoxyphenethylamine). Doses 200–400mg mescaline / 20–30g fresh peyote. Longest onset (1–2hrs). Contains 50+ other alkaloids. Legal for NAC members in the US. Peyote cactus is slow-growing and endangered in the wild.',
+    molPoints: 16
+  },
+  {
+    id: 'dmt',
+    name: 'DMT',
+    alias: '"The Spirit Molecule" · N,N-Dimethyltryptamine',
+    badge: 'TRYPTAMINE',
+    class: 'tryptamine',
+    color: '#00e5ff',
+    duration: '15–45 min (smoked)',
+    durationPct: 0.15,
+    desc: 'The most intense psychedelic known. Occurs endogenously in humans and throughout the plant kingdom. Smoked form produces a complete reality break within seconds. The active compound in ayahuasca.',
+    history: 'First synthesized by Richard Manske in 1931. Its psychedelic properties discovered by Stephen Szára in 1956. Found naturally in the human body and in hundreds of plants. Ayahuasca — combining DMT-containing plants with MAOIs — has been used by Amazonian peoples for centuries. Rick Strassman conducted the first approved clinical DMT study in the 1990s, documenting entity contact experiences, published in "DMT: The Spirit Molecule" (2000).',
+    effects: ['Complete reality displacement', 'Entity encounters', 'Geometric hyperspace', 'Ego obliteration', 'Time collapse', 'Profound awe/terror', 'Ineffable realms', 'Rapid onset/offset'],
+    knowledge: 'Endogenous trace amine. Smoked: active 15–45min. Oral (ayahuasca with MAOI): 4–6hrs. Tolerance negligible. Potentially produced in human pineal gland. 5-HT2A agonist, sigma-1 receptor agonist. Among the most researched substances for NDE-like experiences.',
+    molPoints: 14
+  },
+  {
+    id: 'dob',
+    name: 'DOB',
+    alias: '"Brolamfetamine" · 4-Bromo-2,5-dimethoxamphetamine',
+    badge: 'AMPHETAMINE',
+    class: 'phenethylamine',
+    color: '#ff6b35',
+    duration: '16–30 hours',
+    durationPct: 1.0,
+    desc: 'An extraordinarily long-lasting psychedelic amphetamine. Rare and potent. Often mistaken for LSD. Can persist beyond 24 hours. Requires extreme caution due to potency and duration.',
+    history: 'Synthesized by Alexander Shulgin in 1967 and documented in PiHKAL. One of the first DOx compounds discovered. Rarely encountered in pure form — often misrepresented as LSD on blotter paper. Gained notoriety in the 2000s when several hospitalizations resulted from users unknowingly taking DOB while expecting LSD. Its vasoconstrictive properties make high doses medically dangerous.',
+    effects: ['Intense geometric visuals', 'Stimulant body load', 'Prolonged time dilation', 'Mental clarity', 'Physical tension', 'Vasoconstriction', 'Insomnia', 'Extreme duration'],
+    knowledge: 'Active 1–3mg. Amphetamine backbone with psychedelic action. 5-HT2A agonist plus adrenergic activity. Vasoconstriction poses risk at high doses. Cross-tolerates with other serotonergic psychedelics. Extremely important to have accurate substance ID — reagent test essential.',
+    molPoints: 20
+  },
+  {
+    id: 'mda',
+    name: 'MDA',
+    alias: '"The Love Drug" · 3,4-Methylenedioxyamphetamine',
+    badge: 'ENTACTOGEN',
+    class: 'classic',
+    color: '#ff1493',
+    duration: '6–8 hours',
+    durationPct: 0.65,
+    desc: 'The original "love drug." Precursor to MDMA. More psychedelic and introspective than its successor, with stronger hallucinogenic properties and a reputation for deep emotional excavation.',
+    history: 'First synthesized by G. Mannish and W. Jacobsohn in 1910. Patented by Merck in 1914. Independently rediscovered by Shulgin and used in psychotherapy in the 1970s by therapists like Richard Yensen. Briefly sold as a street drug "the love pill" in the 1960s-70s. Scheduled in 1970. MDMA was later developed partly as a less toxic alternative.',
+    effects: ['Emotional openness', 'Empathy surge', 'Mild hallucinations', 'Sensory enhancement', 'Introspective depth', 'Physical stimulation', 'Euphoria', 'Love and connection'],
+    knowledge: 'Releases serotonin, dopamine, norepinephrine. More serotonergic than MDMA. Active 80–160mg. Longer and more psychedelic than MDMA. Neurotoxic potential at high doses or repeated use — serotonin syndrome risk. Historically used in PTSD therapy contexts before scheduling.',
+    molPoints: 18
+  },
+  {
+    id: 'pcp',
+    name: 'PCP',
+    alias: '"Angel Dust" · Phencyclidine',
+    badge: 'DISSOCIATIVE',
+    class: 'dissociative',
+    color: '#39ff14',
+    duration: '4–8 hours',
+    durationPct: 0.6,
+    desc: 'The prototype dissociative anesthetic. Developed as a surgical anesthetic in 1956. Produces profound dissociation, analgesia, and at high doses, full sensory disconnection from the physical body.',
+    history: 'Developed by Parke-Davis as a surgical anesthetic (Sernyl) in 1956. Discontinued in 1965 due to emergence delirium in patients. Street use emerged in the 1970s. Led to the discovery of the NMDA receptor system — PCP\'s binding site is now among the most studied in neuroscience. Research into the NMDA receptor pathway directly informed development of ketamine (a shorter-acting analog) and eventually esketamine (Spravato), now FDA-approved for depression.',
+    effects: ['Complete dissociation', 'Analgesia/numbness', 'Out-of-body states', 'Time distortion', 'Superhuman feeling', 'Dissociative hallucinations', 'Amnesia (high dose)', 'Depersonalization'],
+    knowledge: 'NMDA receptor antagonist. Active threshold ~5mg smoked. Highly lipophilic — accumulates in fat tissue causing prolonged effects. Street forms often highly variable purity. High-dose use can produce psychosis indistinguishable from schizophrenia. Bladder toxicity with heavy use. Its receptor action inspired the sigma hypothesis of schizophrenia.',
+    molPoints: 16
+  }
+];
+
+// ── MOLECULE DRAW ─────────────────────────────────────────────────────────────
+function drawMolecule(canvas, color, seed, animated = true) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width = canvas.offsetWidth || 340;
+  const H = canvas.height = canvas.offsetHeight || 180;
+  
+  let t = 0;
+  const rng = (n) => {
+    let x = Math.sin(n + seed * 137.5) * 43758.5453;
+    return x - Math.floor(x);
+  };
+
+  // Generate nodes
+  const nodeCount = 8 + Math.floor(rng(0) * 6);
+  const nodes = [];
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.32;
+
+  for (let i = 0; i < nodeCount; i++) {
+    const angle = (i / nodeCount) * Math.PI * 2;
+    const r = R * (0.4 + rng(i * 3) * 0.6);
+    nodes.push({
+      bx: cx + Math.cos(angle) * r,
+      by: cy + Math.sin(angle) * r,
+      x: 0, y: 0,
+      vx: (rng(i * 7) - 0.5) * 0.3,
+      vy: (rng(i * 11) - 0.5) * 0.3,
+      r: 3 + rng(i * 5) * 3,
+      label: ['C','N','O','S','H','Br','Cl','P'][Math.floor(rng(i * 13) * 8)]
+    });
+    nodes[i].x = nodes[i].bx;
+    nodes[i].y = nodes[i].by;
+  }
+
+  // Generate bonds
+  const bonds = [];
+  for (let i = 0; i < nodeCount; i++) {
+    bonds.push({ a: i, b: (i + 1) % nodeCount, type: Math.random() > 0.7 ? 2 : 1 });
+    if (rng(i * 17) > 0.6 && i < nodeCount - 2) {
+      bonds.push({ a: i, b: i + 2, type: 1 });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Background
+    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.4);
+    bg.addColorStop(0, `${color}0a`);
+    bg.addColorStop(1, 'transparent');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    if (animated) t += 0.008;
+
+    nodes.forEach((n, i) => {
+      const wave = Math.sin(t * 1.2 + i * 0.8) * 4;
+      const wave2 = Math.cos(t * 0.9 + i * 1.1) * 3;
+      n.x = n.bx + wave;
+      n.y = n.by + wave2;
+    });
+
+    // Draw bonds
+    bonds.forEach(b => {
+      const a = nodes[b.a], bb = nodes[b.b];
+      const dx = bb.x - a.x, dy = bb.y - a.y;
+      const len = Math.sqrt(dx*dx+dy*dy);
+      const nx = -dy/len, ny = dx/len;
+
+      if (b.type === 2) {
+        const off = 2.5;
+        [[off,off],[-off,-off]].forEach(([ox,oy]) => {
+          ctx.beginPath();
+          ctx.moveTo(a.x + nx*ox, a.y + ny*oy);
+          ctx.lineTo(bb.x + nx*ox, bb.y + ny*oy);
+          ctx.strokeStyle = color + '60';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(bb.x, bb.y);
+        ctx.strokeStyle = color + '55';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    });
+
+    // Draw nodes
+    nodes.forEach((n, i) => {
+      const pulse = 1 + Math.sin(t * 2 + i) * 0.15;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.font = `bold ${8 + n.r}px 'Share Tech Mono', monospace`;
+      ctx.fillStyle = '#000';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(n.label, n.x, n.y);
+    });
+
+    // Orbital rings
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 0.85, 0, Math.PI * 2);
+    ctx.strokeStyle = color + '15';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  let animId;
+  function loop() {
+    draw();
+    if (animated) animId = requestAnimationFrame(loop);
+  }
+  loop();
+  return () => cancelAnimationFrame(animId);
+}
+
+// ── BG CANVAS ─────────────────────────────────────────────────────────────────
+(function initBg() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initParticles() {
+    particles = Array.from({length: 60}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -Math.random() * 0.3 - 0.1,
+      life: Math.random(),
+      color: ['#c8ff00','#00e5ff','#ff2d78','#a855f7'][Math.floor(Math.random()*4)]
+    }));
+  }
+
+  function animateBg() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.life -= 0.003;
+      if (p.life <= 0) { p.x = Math.random()*W; p.y = H + 10; p.life = 0.8 + Math.random()*0.2; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2);
+      ctx.fillStyle = p.color + Math.floor(p.life * 80).toString(16).padStart(2,'0');
+      ctx.fill();
+    });
+    requestAnimationFrame(animateBg);
+  }
+
+  resize(); initParticles(); animateBg();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+})();
+
+// ── BUILD CARDS ───────────────────────────────────────────────────────────────
+const grid = document.getElementById('grid');
+const cleanupFns = [];
+
+chemicals.forEach((chem, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.class = chem.class;
+  card.style.setProperty('--c', chem.color);
+  card.style.setProperty('--glow-c', chem.color + '15');
+  card.style.animationDelay = `${i * 0.1}s`;
+
+  card.innerHTML = `
+    <canvas class="mol-canvas" id="mol-${chem.id}"></canvas>
+    <div class="card-glow"></div>
+    <div class="card-body">
+      <div class="card-header">
+        <div>
+          <div class="card-name">${chem.name}</div>
+          <div class="card-alias" style="color:${chem.color}">${chem.alias}</div>
+        </div>
+        <div class="card-badge">${chem.badge}</div>
+      </div>
+      <div class="duration-bar">
+        <div class="duration-label">DURATION RANGE</div>
+        <div class="duration-track">
+          <div class="duration-fill" style="background:${chem.color};box-shadow:0 0 8px ${chem.color};width:${chem.durationPct*100}%"></div>
+        </div>
+        <div class="duration-text">${chem.duration}</div>
+      </div>
+      <p class="card-desc">${chem.desc}</p>
+      <button class="expand-btn" onclick="openModal('${chem.id}')">[ VIEW FULL PROFILE ]</button>
+    </div>
+  `;
+
+  grid.appendChild(card);
+});
+
+// Initialize molecule animations after DOM insert
+requestAnimationFrame(() => {
+  chemicals.forEach((chem, i) => {
+    const canvas = document.getElementById(`mol-${chem.id}`);
+    if (canvas) {
+      const cleanup = drawMolecule(canvas, chem.color, i * 31 + 7);
+      cleanupFns.push(cleanup);
+    }
+  });
+
+  // Intersection observer for duration bars
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.card').forEach(c => observer.observe(c));
+});
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+function filterCards(cls, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    const show = cls === 'all' || card.dataset.class === cls;
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+let modalCleanup = null;
+
+function openModal(id) {
+  const chem = chemicals.find(c => c.id === id);
+  if (!chem) return;
+
+  document.getElementById('modal-title').textContent = chem.name;
+  document.getElementById('modal-title').style.color = chem.color;
+  document.getElementById('modal').style.setProperty('--mc', chem.color);
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-canvas-wrap">
+      <canvas class="modal-canvas" id="modal-mol"></canvas>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Substance</div>
+      <p class="modal-text"><strong style="color:${chem.color}">${chem.alias}</strong></p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Historical Context</div>
+      <p class="modal-text">${chem.history}</p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Duration · ${chem.duration}</div>
+      <div class="duration-track" style="margin-bottom:8px"><div class="duration-fill" style="background:${chem.color};box-shadow:0 0 8px ${chem.color};width:${chem.durationPct*100}%;transform:scaleX(1)"></div></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Effects Profile</div>
+      <div class="effects-grid">
+        ${chem.effects.map(e => `<div class="effect-tag">${e}</div>`).join('')}
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Pharmacological Notes</div>
+      <p class="modal-text">${chem.knowledge}</p>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    const mc = document.getElementById('modal-mol');
+    if (mc) modalCleanup = drawMolecule(mc, chem.color, chemicals.indexOf(chem) * 31 + 7, true);
+  });
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  if (modalCleanup) { modalCleanup(); modalCleanup = null; }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+</script>
+
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/images/logo-full-tagline.png" alt="1142 Labs">
+      <p>1142 is a spiritual jailbreak. A neurodivergent fortress. A scientific underground. Est. Dec 22, 2019.</p>
+    </div>
+    <div class="footer-col"><h4>The Fortress</h4><ul>
+      <li><a href="index.html">The Void (Home)</a></li>
+      <li><a href="research.html">The Brain (Research)</a></li>
+      <li><a href="tools.html">The Engine (Tools)</a></li>
+      <li><a href="archive.html">The Archive</a></li>
+      <li><a href="about.html">The Creator</a></li>
+      <li><a href="1142_chemicals.html">Chemicals</a></li>
+      <li><a href="pdf_portal.html">PDF Portal</a></li>
+      <li><a href="socials.html">Network</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Research</h4><ul>
+      <li><a href="research.html">Breakthroughs</a></li>
+      <li><a href="research.html#chemicals">Chemical DB</a></li>
+      <li><a href="research.html#charts">Visualizations</a></li>
+      <li><a href="tools.html#combos">Combo Calc</a></li>
+      <li><a href="tools.html#withdrawal">Withdrawal Calc</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>About</h4><ul>
+      <li><a href="about.html">Cole EverDark</a></li>
+      <li><a href="about.html#personas">Persona Matrix</a></li>
+      <li><a href="archive.html#manifesto">The Manifesto</a></li>
+      <li><a href="archive.html#logs">Cole's Tab Corner</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 1142 Labs · Est. Dec 22nd 2019 · In loving memory of Katrina Jade Mutch Hasler ♥</p>
+    <div class="footer-badge"><div class="footer-dot"></div>AN EVERDARK PRODUCTION</div>
+  </div>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const chemicals = [
+  {
+    id: 'lsd',
+    name: 'LSD',
+    alias: '"Acid" · Lysergic Acid Diethylamide',
+    badge: 'LYSERGAMIDE',
+    class: 'classic',
+    color: '#c8ff00',
+    duration: '8–12 hours',
+    durationPct: 0.85,
+    desc: 'The archetype. Synthesized by Albert Hofmann in 1938, its psychedelic properties discovered accidentally in 1943. One of the most potent psychoactive compounds known.',
+    history: 'Albert Hofmann first synthesized LSD-25 in 1938 at Sandoz Laboratories while researching ergot alkaloids. Its psychedelic properties were discovered on April 19, 1943 — "Bicycle Day" — when Hofmann accidentally absorbed a small amount through his fingertips. Sandoz later marketed it as "Delysid" for psychiatric research throughout the 1950s–60s. It became central to the counterculture movement before being scheduled in 1968.',
+    effects: ['Geometric hallucinations', 'Ego dissolution', 'Synesthesia', 'Time distortion', 'Emotional amplification', 'Pattern recognition', 'Profound empathy', 'Altered thought loops'],
+    knowledge: 'Acts primarily as a 5-HT2A agonist. Doses measured in micrograms (50–200µg). No physical toxicity at normal doses. Set and setting critical. Tolerance builds rapidly and cross-tolerates with psilocybin and mescaline.',
+    molPoints: 26
+  },
+  {
+    id: '2cb',
+    name: '2C-B',
+    alias: '"Nexus" · 4-Bromo-2,5-dimethoxyphenethylamine',
+    badge: 'PHENETHYLAMINE',
+    class: 'phenethylamine',
+    color: '#ff2d78',
+    duration: '4–6 hours',
+    durationPct: 0.45,
+    desc: 'Synthesized by Alexander Shulgin in 1974. Known for combining psychedelic visuals with entactogenic warmth. Considered by many the ideal recreational psychedelic.',
+    history: 'Developed by Alexander "Sasha" Shulgin in 1974 and detailed in his landmark text PiHKAL (1991). Originally sold legally as a substitute for MDMA after the scheduling of MDA. Particularly popular in European rave culture during the 1990s. Shulgin considered it among his most successful creations.',
+    effects: ['Rich CEV/OEV visuals', 'Heightened sensory pleasure', 'Euphoria', 'Body warmth', 'Enhanced music appreciation', 'Mild empathy', 'Sexual enhancement', 'Clear-headed lucidity'],
+    knowledge: 'Active at 12–25mg. 5-HT2A/2B/2C agonist with dopamine and alpha-adrenergic activity. Notably dose-sensitive: threshold, recreational, and intense experiences separated by just milligrams. Duration shorter than LSD making it more manageable.',
+    molPoints: 18
+  },
+  {
+    id: 'psilocybin',
+    name: 'PSILOCYBIN',
+    alias: '"Magic Mushrooms" · 4-PO-DMT',
+    badge: 'TRYPTAMINE',
+    class: 'tryptamine',
+    color: '#a855f7',
+    duration: '4–6 hours',
+    durationPct: 0.45,
+    desc: 'The original sacrament. Found in 200+ species of fungi globally. Used ceremonially for millennia. Psilocybin dephosphorylates to psilocin — the active compound — in the body.',
+    history: 'Indigenous Mesoamerican cultures used psilocybin mushrooms ("teonanácatl") in religious ceremonies for thousands of years. R. Gordon Wasson participated in a Mazatec ritual in 1955, later publishing in LIFE magazine (1957). Albert Hofmann isolated psilocybin in 1958. Research halted after 1970 scheduling but resumed aggressively in the 2010s, with major trials at Johns Hopkins and NYU showing efficacy for depression and addiction.',
+    effects: ['Introspective visions', 'Emotional breakthroughs', 'Nature connectedness', 'Ego death (high dose)', 'Laughter and wonder', 'Philosophical insight', 'Visual fractals', 'Time dilation'],
+    knowledge: 'Prodrug of psilocin. Typical doses 1–5g dried mushrooms (1.5–35mg psilocybin). Cross-tolerates with LSD. Currently in Phase 2/3 clinical trials for treatment-resistant depression, PTSD, and addiction. Oregon legalized supervised psilocybin services in 2023.',
+    molPoints: 20
+  },
+  {
+    id: 'peyote',
+    name: 'PEYOTE',
+    alias: '"The Sacred Cactus" · Mescaline',
+    badge: 'PHENETHYLAMINE',
+    class: 'classic',
+    color: '#f97316',
+    duration: '8–12 hours',
+    durationPct: 0.85,
+    desc: 'A small, spineless cactus native to Mexico and southwestern Texas. Contains mescaline as its primary alkaloid. Considered sacred by the Huichol, Rarámuri, and Native American Church.',
+    history: 'Peyote use in indigenous ritual dates back at least 5,700 years, evidenced by archaeological finds in Texas. The Native American Church, incorporating peyote ceremonies, was formally organized in 1918. Mescaline was isolated by Arthur Heffter in 1897 and synthesized by Ernst Späth in 1919. Aldous Huxley\'s "The Doors of Perception" (1954) described his mescaline experience and became enormously influential.',
+    effects: ['Complex colorful visions', 'Deep spiritual connection', 'Nausea (onset)', 'Profound introspection', 'Sensory enhancement', 'Time standing still', 'Geometric patterns', 'Ancestral feeling'],
+    knowledge: 'Active alkaloid mescaline (3,4,5-trimethoxyphenethylamine). Doses 200–400mg mescaline / 20–30g fresh peyote. Longest onset (1–2hrs). Contains 50+ other alkaloids. Legal for NAC members in the US. Peyote cactus is slow-growing and endangered in the wild.',
+    molPoints: 16
+  },
+  {
+    id: 'dmt',
+    name: 'DMT',
+    alias: '"The Spirit Molecule" · N,N-Dimethyltryptamine',
+    badge: 'TRYPTAMINE',
+    class: 'tryptamine',
+    color: '#00e5ff',
+    duration: '15–45 min (smoked)',
+    durationPct: 0.15,
+    desc: 'The most intense psychedelic known. Occurs endogenously in humans and throughout the plant kingdom. Smoked form produces a complete reality break within seconds. The active compound in ayahuasca.',
+    history: 'First synthesized by Richard Manske in 1931. Its psychedelic properties discovered by Stephen Szára in 1956. Found naturally in the human body and in hundreds of plants. Ayahuasca — combining DMT-containing plants with MAOIs — has been used by Amazonian peoples for centuries. Rick Strassman conducted the first approved clinical DMT study in the 1990s, documenting entity contact experiences, published in "DMT: The Spirit Molecule" (2000).',
+    effects: ['Complete reality displacement', 'Entity encounters', 'Geometric hyperspace', 'Ego obliteration', 'Time collapse', 'Profound awe/terror', 'Ineffable realms', 'Rapid onset/offset'],
+    knowledge: 'Endogenous trace amine. Smoked: active 15–45min. Oral (ayahuasca with MAOI): 4–6hrs. Tolerance negligible. Potentially produced in human pineal gland. 5-HT2A agonist, sigma-1 receptor agonist. Among the most researched substances for NDE-like experiences.',
+    molPoints: 14
+  },
+  {
+    id: 'dob',
+    name: 'DOB',
+    alias: '"Brolamfetamine" · 4-Bromo-2,5-dimethoxamphetamine',
+    badge: 'AMPHETAMINE',
+    class: 'phenethylamine',
+    color: '#ff6b35',
+    duration: '16–30 hours',
+    durationPct: 1.0,
+    desc: 'An extraordinarily long-lasting psychedelic amphetamine. Rare and potent. Often mistaken for LSD. Can persist beyond 24 hours. Requires extreme caution due to potency and duration.',
+    history: 'Synthesized by Alexander Shulgin in 1967 and documented in PiHKAL. One of the first DOx compounds discovered. Rarely encountered in pure form — often misrepresented as LSD on blotter paper. Gained notoriety in the 2000s when several hospitalizations resulted from users unknowingly taking DOB while expecting LSD. Its vasoconstrictive properties make high doses medically dangerous.',
+    effects: ['Intense geometric visuals', 'Stimulant body load', 'Prolonged time dilation', 'Mental clarity', 'Physical tension', 'Vasoconstriction', 'Insomnia', 'Extreme duration'],
+    knowledge: 'Active 1–3mg. Amphetamine backbone with psychedelic action. 5-HT2A agonist plus adrenergic activity. Vasoconstriction poses risk at high doses. Cross-tolerates with other serotonergic psychedelics. Extremely important to have accurate substance ID — reagent test essential.',
+    molPoints: 20
+  },
+  {
+    id: 'mda',
+    name: 'MDA',
+    alias: '"The Love Drug" · 3,4-Methylenedioxyamphetamine',
+    badge: 'ENTACTOGEN',
+    class: 'classic',
+    color: '#ff1493',
+    duration: '6–8 hours',
+    durationPct: 0.65,
+    desc: 'The original "love drug." Precursor to MDMA. More psychedelic and introspective than its successor, with stronger hallucinogenic properties and a reputation for deep emotional excavation.',
+    history: 'First synthesized by G. Mannish and W. Jacobsohn in 1910. Patented by Merck in 1914. Independently rediscovered by Shulgin and used in psychotherapy in the 1970s by therapists like Richard Yensen. Briefly sold as a street drug "the love pill" in the 1960s-70s. Scheduled in 1970. MDMA was later developed partly as a less toxic alternative.',
+    effects: ['Emotional openness', 'Empathy surge', 'Mild hallucinations', 'Sensory enhancement', 'Introspective depth', 'Physical stimulation', 'Euphoria', 'Love and connection'],
+    knowledge: 'Releases serotonin, dopamine, norepinephrine. More serotonergic than MDMA. Active 80–160mg. Longer and more psychedelic than MDMA. Neurotoxic potential at high doses or repeated use — serotonin syndrome risk. Historically used in PTSD therapy contexts before scheduling.',
+    molPoints: 18
+  },
+  {
+    id: 'pcp',
+    name: 'PCP',
+    alias: '"Angel Dust" · Phencyclidine',
+    badge: 'DISSOCIATIVE',
+    class: 'dissociative',
+    color: '#39ff14',
+    duration: '4–8 hours',
+    durationPct: 0.6,
+    desc: 'The prototype dissociative anesthetic. Developed as a surgical anesthetic in 1956. Produces profound dissociation, analgesia, and at high doses, full sensory disconnection from the physical body.',
+    history: 'Developed by Parke-Davis as a surgical anesthetic (Sernyl) in 1956. Discontinued in 1965 due to emergence delirium in patients. Street use emerged in the 1970s. Led to the discovery of the NMDA receptor system — PCP\'s binding site is now among the most studied in neuroscience. Research into the NMDA receptor pathway directly informed development of ketamine (a shorter-acting analog) and eventually esketamine (Spravato), now FDA-approved for depression.',
+    effects: ['Complete dissociation', 'Analgesia/numbness', 'Out-of-body states', 'Time distortion', 'Superhuman feeling', 'Dissociative hallucinations', 'Amnesia (high dose)', 'Depersonalization'],
+    knowledge: 'NMDA receptor antagonist. Active threshold ~5mg smoked. Highly lipophilic — accumulates in fat tissue causing prolonged effects. Street forms often highly variable purity. High-dose use can produce psychosis indistinguishable from schizophrenia. Bladder toxicity with heavy use. Its receptor action inspired the sigma hypothesis of schizophrenia.',
+    molPoints: 16
+  }
+];
+
+// ── MOLECULE DRAW ─────────────────────────────────────────────────────────────
+function drawMolecule(canvas, color, seed, animated = true) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width = canvas.offsetWidth || 340;
+  const H = canvas.height = canvas.offsetHeight || 180;
+  
+  let t = 0;
+  const rng = (n) => {
+    let x = Math.sin(n + seed * 137.5) * 43758.5453;
+    return x - Math.floor(x);
+  };
+
+  // Generate nodes
+  const nodeCount = 8 + Math.floor(rng(0) * 6);
+  const nodes = [];
+  const cx = W / 2, cy = H / 2;
+  const R = Math.min(W, H) * 0.32;
+
+  for (let i = 0; i < nodeCount; i++) {
+    const angle = (i / nodeCount) * Math.PI * 2;
+    const r = R * (0.4 + rng(i * 3) * 0.6);
+    nodes.push({
+      bx: cx + Math.cos(angle) * r,
+      by: cy + Math.sin(angle) * r,
+      x: 0, y: 0,
+      vx: (rng(i * 7) - 0.5) * 0.3,
+      vy: (rng(i * 11) - 0.5) * 0.3,
+      r: 3 + rng(i * 5) * 3,
+      label: ['C','N','O','S','H','Br','Cl','P'][Math.floor(rng(i * 13) * 8)]
+    });
+    nodes[i].x = nodes[i].bx;
+    nodes[i].y = nodes[i].by;
+  }
+
+  // Generate bonds
+  const bonds = [];
+  for (let i = 0; i < nodeCount; i++) {
+    bonds.push({ a: i, b: (i + 1) % nodeCount, type: Math.random() > 0.7 ? 2 : 1 });
+    if (rng(i * 17) > 0.6 && i < nodeCount - 2) {
+      bonds.push({ a: i, b: i + 2, type: 1 });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Background
+    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.4);
+    bg.addColorStop(0, `${color}0a`);
+    bg.addColorStop(1, 'transparent');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    if (animated) t += 0.008;
+
+    nodes.forEach((n, i) => {
+      const wave = Math.sin(t * 1.2 + i * 0.8) * 4;
+      const wave2 = Math.cos(t * 0.9 + i * 1.1) * 3;
+      n.x = n.bx + wave;
+      n.y = n.by + wave2;
+    });
+
+    // Draw bonds
+    bonds.forEach(b => {
+      const a = nodes[b.a], bb = nodes[b.b];
+      const dx = bb.x - a.x, dy = bb.y - a.y;
+      const len = Math.sqrt(dx*dx+dy*dy);
+      const nx = -dy/len, ny = dx/len;
+
+      if (b.type === 2) {
+        const off = 2.5;
+        [[off,off],[-off,-off]].forEach(([ox,oy]) => {
+          ctx.beginPath();
+          ctx.moveTo(a.x + nx*ox, a.y + ny*oy);
+          ctx.lineTo(bb.x + nx*ox, bb.y + ny*oy);
+          ctx.strokeStyle = color + '60';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(bb.x, bb.y);
+        ctx.strokeStyle = color + '55';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    });
+
+    // Draw nodes
+    nodes.forEach((n, i) => {
+      const pulse = 1 + Math.sin(t * 2 + i) * 0.15;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.font = `bold ${8 + n.r}px 'Share Tech Mono', monospace`;
+      ctx.fillStyle = '#000';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(n.label, n.x, n.y);
+    });
+
+    // Orbital rings
+    ctx.beginPath();
+    ctx.arc(cx, cy, R * 0.85, 0, Math.PI * 2);
+    ctx.strokeStyle = color + '15';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  let animId;
+  function loop() {
+    draw();
+    if (animated) animId = requestAnimationFrame(loop);
+  }
+  loop();
+  return () => cancelAnimationFrame(animId);
+}
+
+// ── BG CANVAS ─────────────────────────────────────────────────────────────────
+(function initBg() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initParticles() {
+    particles = Array.from({length: 60}, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -Math.random() * 0.3 - 0.1,
+      life: Math.random(),
+      color: ['#c8ff00','#00e5ff','#ff2d78','#a855f7'][Math.floor(Math.random()*4)]
+    }));
+  }
+
+  function animateBg() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.life -= 0.003;
+      if (p.life <= 0) { p.x = Math.random()*W; p.y = H + 10; p.life = 0.8 + Math.random()*0.2; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.5, 0, Math.PI*2);
+      ctx.fillStyle = p.color + Math.floor(p.life * 80).toString(16).padStart(2,'0');
+      ctx.fill();
+    });
+    requestAnimationFrame(animateBg);
+  }
+
+  resize(); initParticles(); animateBg();
+  window.addEventListener('resize', () => { resize(); initParticles(); });
+})();
+
+// ── BUILD CARDS ───────────────────────────────────────────────────────────────
+const grid = document.getElementById('grid');
+const cleanupFns = [];
+
+chemicals.forEach((chem, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.class = chem.class;
+  card.style.setProperty('--c', chem.color);
+  card.style.setProperty('--glow-c', chem.color + '15');
+  card.style.animationDelay = `${i * 0.1}s`;
+
+  card.innerHTML = `
+    <canvas class="mol-canvas" id="mol-${chem.id}"></canvas>
+    <div class="card-glow"></div>
+    <div class="card-body">
+      <div class="card-header">
+        <div>
+          <div class="card-name">${chem.name}</div>
+          <div class="card-alias" style="color:${chem.color}">${chem.alias}</div>
+        </div>
+        <div class="card-badge">${chem.badge}</div>
+      </div>
+      <div class="duration-bar">
+        <div class="duration-label">DURATION RANGE</div>
+        <div class="duration-track">
+          <div class="duration-fill" style="background:${chem.color};box-shadow:0 0 8px ${chem.color};width:${chem.durationPct*100}%"></div>
+        </div>
+        <div class="duration-text">${chem.duration}</div>
+      </div>
+      <p class="card-desc">${chem.desc}</p>
+      <button class="expand-btn" onclick="openModal('${chem.id}')">[ VIEW FULL PROFILE ]</button>
+    </div>
+  `;
+
+  grid.appendChild(card);
+});
+
+// Initialize molecule animations after DOM insert
+requestAnimationFrame(() => {
+  chemicals.forEach((chem, i) => {
+    const canvas = document.getElementById(`mol-${chem.id}`);
+    if (canvas) {
+      const cleanup = drawMolecule(canvas, chem.color, i * 31 + 7);
+      cleanupFns.push(cleanup);
+    }
+  });
+
+  // Intersection observer for duration bars
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.card').forEach(c => observer.observe(c));
+});
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+function filterCards(cls, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    const show = cls === 'all' || card.dataset.class === cls;
+    card.style.display = show ? '' : 'none';
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+let modalCleanup = null;
+
+function openModal(id) {
+  const chem = chemicals.find(c => c.id === id);
+  if (!chem) return;
+
+  document.getElementById('modal-title').textContent = chem.name;
+  document.getElementById('modal-title').style.color = chem.color;
+  document.getElementById('modal').style.setProperty('--mc', chem.color);
+
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-canvas-wrap">
+      <canvas class="modal-canvas" id="modal-mol"></canvas>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Substance</div>
+      <p class="modal-text"><strong style="color:${chem.color}">${chem.alias}</strong></p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Historical Context</div>
+      <p class="modal-text">${chem.history}</p>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Duration · ${chem.duration}</div>
+      <div class="duration-track" style="margin-bottom:8px"><div class="duration-fill" style="background:${chem.color};box-shadow:0 0 8px ${chem.color};width:${chem.durationPct*100}%;transform:scaleX(1)"></div></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Effects Profile</div>
+      <div class="effects-grid">
+        ${chem.effects.map(e => `<div class="effect-tag">${e}</div>`).join('')}
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Pharmacological Notes</div>
+      <p class="modal-text">${chem.knowledge}</p>
+    </div>
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  requestAnimationFrame(() => {
+    const mc = document.getElementById('modal-mol');
+    if (mc) modalCleanup = drawMolecule(mc, chem.color, chemicals.indexOf(chem) * 31 + 7, true);
+  });
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  if (modalCleanup) { modalCleanup(); modalCleanup = null; }
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+</script>
+<script src="assets/fx.js"></script>
+</body>
+</html>

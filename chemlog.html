@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chem Log · 1142 Labs</title>
+<link rel="icon" href="assets/images/1142_logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/global.css">
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+.tbl{width:100%;border-collapse:collapse;font-family:'Share Tech Mono',monospace;font-size:12px;}
+.tbl th{background:rgba(0,240,255,.07);color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;padding:12px 16px;border:1px solid rgba(0,240,255,.15);text-align:left;font-weight:400;}
+.tbl td{padding:12px 16px;border:1px solid rgba(255,255,255,.05);color:rgba(240,244,255,.7);vertical-align:top;line-height:1.6;}
+.tbl tr:hover td{background:rgba(0,240,255,.03);}
+.tag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.15em;padding:3px 9px;margin:2px;border:1px solid;}
+.tag-c{color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);}
+.tag-p{color:var(--purple);border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.06);}
+.tag-pk{color:var(--pink);border-color:rgba(236,72,153,.3);background:rgba(236,72,153,.06);}
+.tag-g{color:var(--green);border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.06);}
+.chem-card{background:var(--void2);border:1px solid var(--border-p);padding:28px 32px;margin-bottom:10px;position:relative;transition:border-color .3s;}
+.chem-card:hover{border-color:rgba(0,240,255,.35);}
+.chem-card .top-bar{height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));margin-bottom:20px;}
+.log-entry{border-left:2px solid var(--border-p);padding-left:24px;margin-bottom:32px;position:relative;}
+.log-entry::before{content:'';position:absolute;left:-5px;top:4px;width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+.log-date{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;}
+.log-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--white);margin-bottom:10px;}
+.log-body{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:300;color:rgba(240,244,255,.65);line-height:1.75;}
+</style>
+</head>
+<body>
+<div id="cursor"></div><div id="cursor-ring"></div>
+<nav class="hud">
+  <a href="index.html" class="hud-logo">
+    <img src="assets/images/1142_logo.png" alt="1142 Labs"><span>1142 LABS</span>
+  </a>
+  <ul class="hud-nav">
+    <li><a href="index.html">HOME</a></li>
+    <li><a href="research.html">RESEARCH</a></li>
+    <li><a href="breakthroughs.html">BREAKTHROUGHS</a></li>
+    <li><a href="creators.html">CREATORS</a></li>
+    <li><a href="vision.html">VISION</a></li>
+    <li><a href="chemlog.html" class="active">CHEMLOG</a></li>
+    <li><a href="1142_chemicals.html">CHEMICALS</a></li>
+    <li><a href="resources.html">RESOURCES</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="archive.html">ARCHIVE</a></li>
+    <li><a href="pdf_portal.html">PDF PORTAL</a></li>
+    <li><a href="socials.html">NETWORK</a></li>
+  </ul>
+  <div class="hud-status"><div class="hud-dot"></div>SYSTEM ONLINE · 1142</div>
+</nav>
+
+<section style="position:relative;min-height:60vh;display:flex;flex-direction:column;justify-content:center;padding:130px 48px 80px;overflow:hidden;">
+  <img src="assets/images/1768774665022.jpg" alt="" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.08;pointer-events:none;filter:saturate(1.5);">
+  <div style="position:absolute;top:0;right:0;width:380px;height:100%;">
+    <img src="assets/images/1772910843420.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;opacity:.13;filter:drop-shadow(0 0 60px var(--cyan));">
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,var(--void),transparent 30%);"></div>
+  </div>
+  <div class="vortex-grid" style="opacity:.4;"></div>
+  <div class="orb orb-c" style="opacity:.5;"></div>
+  <div class="orb orb-p" style="opacity:.4;bottom:-80px;left:-60px;top:auto;"></div>
+  <div style="position:relative;z-index:1;max-width:720px;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--cyan);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s forwards;">STUDIED SUBSTANCES · 2019–PRESENT · COLE EVERDARK · 1142 LABS</div>
+    <img src="assets/images/1142_logo.png" alt="" style="height:50px;filter:drop-shadow(0 0 14px var(--cyan));margin-bottom:22px;display:block;opacity:0;animation:fadeUp .8s .15s forwards;">
+    <h1 style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(44px,7vw,96px);line-height:.9;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s .3s forwards;">
+      <span style="display:block;color:var(--white);">Chem</span>
+      <span style="display:block;color:var(--cyan);text-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,240,255,.4);" class="glitch" data-text="Log">Log</span>
+      <span style="display:block;-webkit-text-stroke:1.5px var(--purple);color:transparent;">Archive</span>
+    </h1>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.6);line-height:1.8;opacity:0;animation:fadeUp .9s .5s forwards;">Every studied substance. Every protocol tested. Every observation logged. The complete chemical archive of 1142 Labs — "Studied Substances" published January 2024.</p>
+  </div>
+</section>
+
+<div class="marquee-strip"><div class="marquee-track">
+  <div class="marquee-item">LSD-25<span class="sep">◆</span>METHYLPHENIDATE<span class="sep">◆</span>PSILOCYBIN<span class="sep">◆</span>DMT<span class="sep">◆</span>MDMA<span class="sep">◆</span>CANNABIS<span class="sep">◆</span>MESCALINE<span class="sep">◆</span>2C-B<span class="sep">◆</span>AMPHETAMINE<span class="sep">◆</span>KETAMINE<span class="sep">◆</span>BUPROPION<span class="sep">◆</span>CAFFEINE<span class="sep">◆</span></div>
+  <div class="marquee-item">LSD-25<span class="sep">◆</span>METHYLPHENIDATE<span class="sep">◆</span>PSILOCYBIN<span class="sep">◆</span>DMT<span class="sep">◆</span>MDMA<span class="sep">◆</span>CANNABIS<span class="sep">◆</span>MESCALINE<span class="sep">◆</span>2C-B<span class="sep">◆</span>AMPHETAMINE<span class="sep">◆</span>KETAMINE<span class="sep">◆</span>BUPROPION<span class="sep">◆</span>CAFFEINE<span class="sep">◆</span></div>
+</div></div>
+
+<section class="section section-void">
+  <div class="section-label reveal">Protocol Series 1 · Primary Research Compounds</div>
+  <h2 class="section-title reveal">Core <span style="color:var(--cyan);">Compounds</span></h2>
+  <p class="section-sub reveal">The primary substances of the 1142 research program. Each studied systematically across multiple sessions with documented observations.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:48px;">
+
+    <div class="chem-card reveal d1">
+      <div class="top-bar"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:6px;">COMPOUND-001 · SEROTONERGIC</div>
+          <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);">LSD-25</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(240,244,255,.4);margin-top:4px;">Lysergic acid diethylamide · C₂₀H₂₅N₃O</div>
+        </div>
+        <div style="font-size:32px;opacity:.7;">🔬</div>
+      </div>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.6);line-height:1.7;margin-bottom:16px;">The foundational compound of 1142. First documented in the December 22, 2019 epiphany — a 12-hour solo session beginning at 11:42 PM. Studied extensively across the Brainstorm Nights protocol in combination with low-dose methylphenidate. Key discoveries include LSD as a Memory Archive (Feb 2022) and enhanced creative data capture under synergistic conditions.</p>
+      <div style="margin-bottom:12px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;color:rgba(240,244,255,.4);text-transform:uppercase;margin-bottom:8px;">Research Focus</div>
+        <span class="tag tag-c">MEMORY ARCHIVE</span>
+        <span class="tag tag-p">CREATIVE SYNERGY</span>
+        <span class="tag tag-pk">TRAUMA PROCESSING</span>
+        <span class="tag tag-c">BRAINSTORM NIGHTS</span>
+        <span class="tag tag-g">RITUAL ANCHOR</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-p);">
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--cyan);">12h</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">DURATION</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--cyan);">5+</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">PAPERS</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--cyan);">2019</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">FIRST LOG</div></div>
+      </div>
+    </div>
+
+    <div class="chem-card reveal d2">
+      <div class="top-bar" style="background:linear-gradient(90deg,var(--purple),var(--pink));"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--purple);text-transform:uppercase;margin-bottom:6px;">COMPOUND-002 · STIMULANT</div>
+          <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);">Methylphenidate</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(240,244,255,.4);margin-top:4px;">Ritalin / Biphentin · C₁₄H₁₉NO₂</div>
+        </div>
+        <div style="font-size:32px;opacity:.7;">💊</div>
+      </div>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.6);line-height:1.7;margin-bottom:16px;">The cornerstone of 1142 research. Five-paper MPH Series published 2020–2022. Core findings: synergy with psychedelics (MPH-001), paradoxical IQ reduction at certain thresholds (MPH-002), the Ritalin Method harm-reduction protocol (MPH-003), perceptual expansion at saturation (MPH-004), and the Oxidized Theory (MPH-005/June 2021). The Blue Meth War narrative centers on stimulant cognitive sovereignty.</p>
+      <div style="margin-bottom:12px;">
+        <span class="tag tag-p">MPH SERIES · 5 PAPERS</span>
+        <span class="tag tag-c">OXIDIZED THEORY</span>
+        <span class="tag tag-pk">IQ THRESHOLD</span>
+        <span class="tag tag-g">HARM REDUCTION</span>
+        <span class="tag tag-p">COGNITIVE SPEED</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-p);">
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--purple);">5</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">PAPERS</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--purple);">2020</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">SERIES START</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--purple);">Rx</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">PRESCRIBED</div></div>
+      </div>
+    </div>
+
+    <div class="chem-card reveal d1">
+      <div class="top-bar" style="background:linear-gradient(90deg,var(--pink),var(--purple));"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--pink);text-transform:uppercase;margin-bottom:6px;">COMPOUND-003 · SEROTONERGIC</div>
+          <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);">Psilocybin</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(240,244,255,.4);margin-top:4px;">Magic mushrooms · C₁₂H₁₇N₂O₄P</div>
+        </div>
+        <div style="font-size:32px;opacity:.7;">🍄</div>
+      </div>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.6);line-height:1.7;margin-bottom:16px;">Documented under CS-004. Key finding: cognitive flexibility gains persisting 4–6 weeks post high-dose session, measured via structured cognitive battery. Studied for neuroplasticity applications specific to neurodivergent cognition. Cross-referenced with LSD sessions to map overlapping and divergent phenomenological profiles.</p>
+      <div style="margin-bottom:12px;">
+        <span class="tag tag-pk">CS-004</span>
+        <span class="tag tag-g">NEUROPLASTICITY</span>
+        <span class="tag tag-c">COGNITIVE FLEXIBILITY</span>
+        <span class="tag tag-p">NEURODIVERGENT FOCUS</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-p);">
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--pink);">4-6w</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">PERSISTENCE</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--pink);">CS-004</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">STUDY ID</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--pink);">2022</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">FIRST LOG</div></div>
+      </div>
+    </div>
+
+    <div class="chem-card reveal d2">
+      <div class="top-bar" style="background:linear-gradient(90deg,var(--green),var(--cyan));"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:var(--green);text-transform:uppercase;margin-bottom:6px;">COMPOUND-004 · TRYPTAMINE</div>
+          <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:20px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);">DMT</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(240,244,255,.4);margin-top:4px;">Dimethyltryptamine · C₁₂H₁₆N₂</div>
+        </div>
+        <div style="font-size:32px;opacity:.7;">🌀</div>
+      </div>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.6);line-height:1.7;margin-bottom:16px;">CS-003 study: Entity Contact phenomenology. Cross-referenced reports across multiple sessions for pattern consistency — structural analysis of communication patterns, geometric consistencies, and emotional tone profiles. The most technically challenging documentation in the 1142 archive due to brevity of state and post-session memory compression.</p>
+      <div style="margin-bottom:12px;">
+        <span class="tag tag-g">CS-003</span>
+        <span class="tag tag-pk">ENTITY CONTACT</span>
+        <span class="tag tag-c">PHENOMENOLOGY</span>
+        <span class="tag tag-p">PATTERN ANALYSIS</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-p);">
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--green);">15m</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">DURATION</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--green);">CS-003</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">STUDY ID</div></div>
+        <div style="text-align:center;"><div style="font-family:'Share Tech Mono',monospace;font-size:18px;color:var(--green);">∞</div><div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--gray);letter-spacing:.1em;">SUBJECTIVE</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--purple),var(--cyan),transparent);opacity:.4;"></div>
+
+<div style="position:relative;height:260px;overflow:hidden;">
+  <img src="assets/images/1772589402529.webp" alt="1142 Labs Chem Lab" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(.65) brightness(.5);">
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--void2) 0%,transparent 35%,transparent 65%,var(--void) 100%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,240,255,.12),transparent 50%,rgba(139,92,246,.08));"></div>
+  <div style="position:absolute;bottom:28px;left:48px;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.5em;color:rgba(0,240,255,.6);margin-bottom:6px;">Protocol Series 2</div>
+    <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;letter-spacing:.1em;color:rgba(240,244,255,.2);text-transform:uppercase;">Studied Substances Archive</div>
+  </div>
+  <div style="position:absolute;top:28px;right:48px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.3em;color:rgba(139,92,246,.5);">1142 LABS · PUBLISHED JAN 2024</div>
+</div>
+
+<section class="section section-dark">
+  <div class="section-label reveal">Protocol Series 2 · Secondary Compounds</div>
+  <h2 class="section-title reveal">Studied <span style="color:var(--purple);">Substances</span></h2>
+  <p class="section-sub reveal">Published January 2024. The complete archive of every substance analyzed by 1142 Labs across five years of independent research.</p>
+
+  <div style="overflow-x:auto;margin-top:48px;" class="reveal">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Compound</th>
+          <th>Class</th>
+          <th>Study Period</th>
+          <th>Primary Finding / Protocol</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--white);">MDMA</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">3,4-methylenedioxymethamphetamine</span></td>
+          <td><span class="tag tag-pk">Entactogen</span></td>
+          <td>2020–2022</td>
+          <td>Empathy enhancement cross-referenced with autism social cognition studies. Documented positive outcomes in interpersonal processing and emotional accessibility.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Cannabis</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">THC / CBD</span></td>
+          <td><span class="tag tag-g">Cannabinoid</span></td>
+          <td>Pre-2019–Ongoing</td>
+          <td>Gateway compound. Initial portal that "cracked the door" per 1142 origin narrative. Studied as anxiety modulator and sleep regulation adjunct throughout all research phases.</td>
+          <td><span class="tag tag-c">ACTIVE</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Mescaline</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">Peyote / San Pedro cactus alkaloid</span></td>
+          <td><span class="tag tag-c">Phenethylamine</span></td>
+          <td>2021–2023</td>
+          <td>Documented for combo analysis (Holy Trinity: LSD + Mescaline + PCP). Long-duration serotonergic profile charted vs. LSD baseline. Visual geometry pattern analysis.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">2C-B</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">4-Bromo-2,5-dimethoxyphenethylamine</span></td>
+          <td><span class="tag tag-c">Phenethylamine</span></td>
+          <td>2021–2022</td>
+          <td>Studied for dose-response curve clarity. Lower dissociative component vs. LSD. Documented for potential ADHD/autism adjunct protocol development.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Amphetamine</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">Adderall / dextroamphetamine</span></td>
+          <td><span class="tag tag-p">Stimulant</span></td>
+          <td>2020–2021</td>
+          <td>Cross-comparison with methylphenidate for neurodivergent cognitive profiles. Key observation: distinct dopamine/norepinephrine ratio differences produce qualitatively different focus states. Documented in Blue Meth War context.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Ketamine</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">Special K · C₁₃H₁₆ClNO</span></td>
+          <td><span class="tag tag-pk">Dissociative</span></td>
+          <td>2022</td>
+          <td>NMDA receptor antagonism profiled against serotonergic baseline. Dissociative state documented for phenomenological comparison. Harm reduction protocol drafted for withdrawal scenarios.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Bupropion</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">Wellbutrin · C₁₃H₁₈ClNO</span></td>
+          <td><span class="tag tag-p">NDRI</span></td>
+          <td>2021–2023</td>
+          <td>Studied as adjunct to methylphenidate. Dopamine/norepinephrine reuptake inhibition profiled for neurodivergent mood stabilization. Interaction with stimulant regimen documented.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Caffeine</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">1,3,7-trimethylxanthine</span></td>
+          <td><span class="tag tag-c">Xanthine</span></td>
+          <td>Ongoing</td>
+          <td>Documented as baseline stimulant. Interaction profiling with methylphenidate for timing and tolerance management. Control variable in multiple Brainstorm Nights sessions.</td>
+          <td><span class="tag tag-c">ACTIVE</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">PCP</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">Phencyclidine</span></td>
+          <td><span class="tag tag-pk">Dissociative</span></td>
+          <td>2022</td>
+          <td>Documented as component of Holy Trinity combo (LSD + Mescaline + PCP). Cartoonish visual geometry, shape transformations, and pinhole focus fluctuations recorded. High-friction harm reduction warnings issued.</td>
+          <td><span class="tag tag-g">ARCHIVED</span></td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--white);">Fentanyl</strong><br><span style="font-size:10px;color:rgba(255,255,255,.4);">Synthetic opioid · C₂₂H₂₈N₂O</span></td>
+          <td><span class="tag tag-pk">Opioid</span></td>
+          <td>Harm Reduction</td>
+          <td>Studied exclusively from a harm reduction and withdrawal documentation perspective. The antagonist of the Blue Meth War ideology. Withdrawal timeline generator developed. NOT a 1142 research compound — included for community safety documentation.</td>
+          <td><span class="tag tag-pk">HARM RED.</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--purple),transparent);opacity:.4;"></div>
+
+<section class="section section-void">
+  <div class="section-label reveal">Research Log · Breakthrough Timeline</div>
+  <h2 class="section-title reveal">The <span style="color:var(--pink);">Log</span></h2>
+  <p class="section-sub reveal">Key observations in chronological order. The living record of the 1142 research program.</p>
+  <div style="margin-top:56px;max-width:800px;">
+
+    <div class="log-entry reveal">
+      <div class="log-date">December 22, 2019 · 11:42 PM</div>
+      <div class="log-title">Entry 001 — The First 11:42</div>
+      <div class="log-body">Solo 12-hour LSD session beginning exactly at 11:42 PM, concluding at 11:42 AM. Basement bachelor apartment, 18 years old, first lease. Something fundamentally shifts. The idea cannot be contained. 1142 Labs is born — not as a brand, as a rejection of every broken thing the world said to accept. Duration: 12 hours. Compound: LSD-25. Setting: Peterborough.</div>
+    </div>
+
+    <div class="log-entry reveal d1">
+      <div class="log-date">March 2020</div>
+      <div class="log-title">Entry 002 — Brainstorm Nights Protocol</div>
+      <div class="log-body">First structured research protocol established. LSD-25 + low-dose methylphenidate (Ritalin) in combination. Objective: creative exploration and real-time data capture. Finding: the stimulant prevents "scatter" during the psychedelic state — the user functions as an operator within their own mind. Creative output measurably enhanced vs. solo LSD sessions. First use of combined session documentation methodology.</div>
+    </div>
+
+    <div class="log-entry reveal d2">
+      <div class="log-date">July 2020</div>
+      <div class="log-title">Entry 003 — 11-42.ca Goes Live</div>
+      <div class="log-body">First digital manifestation of 1142. Site v1.0 launched as a repository for experience reports and psychedelic data. The movement has a URL. CFNY 102.1 The Edge (Toronto) references the project: "2 southern Ontario scientists are tripping out and testing the effects of acid on autism." First mainstream media acknowledgment. The underground goes above ground, briefly.</div>
+    </div>
+
+    <div class="log-entry reveal d1">
+      <div class="log-date">October 2020</div>
+      <div class="log-title">Entry 004 — Medication Recalibration</div>
+      <div class="log-body">High-dose methylphenidate regimen commenced. Key realization: neurodivergent cognitive needs differ fundamentally from the populations mainstream dosing guidelines were built for. The brain is an operating system. The medication is a software update. MPH Series paper development begins.</div>
+    </div>
+
+    <div class="log-entry reveal d2">
+      <div class="log-date">June 2021</div>
+      <div class="log-title">Entry 005 — Oxidized Methylphenidate Theory (MPH-005)</div>
+      <div class="log-body">Theory formalized: methylphenidate in an oxidized state may possess unique cognitive-enhancing properties when used during a psychedelic session. Specific: the chemical state of the molecule changes its interaction with neurotransmitter systems, producing a qualitatively distinct quality of clarity. "Visionary speed." Documented as MPH-005. One of the most technically speculative entries in the archive.</div>
+    </div>
+
+    <div class="log-entry reveal d1">
+      <div class="log-date">February 2022</div>
+      <div class="log-title">Entry 006 — LSD Memory Archive Discovery (CS-001)</div>
+      <div class="log-body">Observation: LSD functions as a tool for unlocking repressed traumatic memories and navigating deeply buried subconscious material. The brain stores trauma like digital files — LSD provides the access key. Sessions designed specifically around this model show consistent pattern: suppressed material becomes retrievable, emotionally processable, and integrable within 48 hours post-session. CS-001 formally written.</div>
+    </div>
+
+    <div class="log-entry reveal d2">
+      <div class="log-date">April 2023</div>
+      <div class="log-title">Entry 007 — Global Ritual Expansion</div>
+      <div class="log-body">The 11:42 ritual — drop at sunset on the 22nd, maintain for 12 hours — expands beyond solo practice to a globally synchronized movement. Participants in multiple locations, same temporal window. Hypothesis: collective synchronized psychedelic exploration yields higher-order insights than isolated sessions. The 11:42 becomes a form of distributed consciousness computing.</div>
+    </div>
+
+    <div class="log-entry reveal d1">
+      <div class="log-date">November 2023</div>
+      <div class="log-title">Entry 008 — Prescription Reinstatement, Barrie</div>
+      <div class="log-body">Successful public advocacy effort in Barrie, Ontario results in official medical recognition and reinstatement of prescription support. Validation of the 1142 approach to neurodivergent medication. A turning point — from underground to partially recognized. The movement enters a phase of stabilization.</div>
+    </div>
+
+    <div class="log-entry reveal d2">
+      <div class="log-date">January 2024</div>
+      <div class="log-title">Entry 009 — Studied Substances Published</div>
+      <div class="log-body">Comprehensive archive published documenting every psychoactive substance analyzed by 1142 Labs over five years of independent research. The chem log goes public. Every compound, every protocol, every harm reduction finding — accessible. The underground library opens its doors.</div>
+    </div>
+
+  </div>
+</section>
+
+<div style="font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:var(--gray);background:var(--void3);border-top:1px solid var(--border-p);padding:20px 48px;text-align:center;">
+  ⚠ All research is for educational and harm reduction purposes. Not medical advice. 1142 Labs does not encourage illegal activity. Always know your substances. Always test. Always have a safety plan.
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/images/logo-full-tagline.png" alt="1142 Labs">
+      <p>1142 is a spiritual jailbreak. A neurodivergent fortress. A scientific underground. Est. Dec 22, 2019.</p>
+    </div>
+    <div class="footer-col"><h4>The Fortress</h4><ul>
+      <li><a href="index.html">Home</a></li><li><a href="research.html">Research</a></li>
+      <li><a href="breakthroughs.html">Breakthroughs</a></li><li><a href="chemlog.html">Chem Log</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Tools</h4><ul>
+      <li><a href="tools.html">Calculator</a></li><li><a href="resources.html">Resources</a></li>
+      <li><a href="vision.html">Vision</a></li><li><a href="archive.html">Archive</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>About</h4><ul>
+      <li><a href="about.html">Cole EverDark</a></li><li><a href="creators.html">Personas</a></li>
+      <li><a href="archive.html#manifesto">Manifesto</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 1142 Labs · Est. Dec 22nd 2019 · In loving memory of Katrina Jade Mutch Hasler ♥</p>
+    <div class="footer-badge"><div class="footer-dot"></div>AN EVERDARK PRODUCTION</div>
+  </div>
+</footer>
+<script src="assets/fx.js" defer></script>
+<script>
+(function(){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.feat-card,.chem-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+  });
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}){threshold:.06});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.glitch').forEach(el=>{if(!el.dataset.text)el.dataset.text=el.textContent.trim();});
+})();
+</script>
+</body>
+</html>

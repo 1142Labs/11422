@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Engine — Tools · 1142 Labs</title>
+<link rel="icon" href="assets/images/1142_logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/global.css">
+<style>@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div><nav class="hud">
+  <a href="index.html" class="hud-logo">
+    <img src="assets/images/1142_logo.png" alt="1142 Labs">
+    <span>1142 LABS</span>
+  </a>
+    <ul class="hud-nav">
+    <li><a href="index.html">HOME</a></li>
+    <li><a href="research.html">RESEARCH</a></li>
+    <li><a href="breakthroughs.html">BREAKTHROUGHS</a></li>
+    <li><a href="creators.html">CREATORS</a></li>
+    <li><a href="vision.html">VISION</a></li>
+    <li><a href="chemlog.html">CHEMLOG</a></li>
+    <li><a href="1142_chemicals.html">CHEMICALS</a></li>
+    <li><a href="resources.html">RESOURCES</a></li>
+    <li><a href="tools.html">TOOLS</a></li>
+    <li><a href="archive.html">ARCHIVE</a></li>
+    <li><a href="pdf_portal.html">PDF PORTAL</a></li>
+    <li><a href="socials.html">NETWORK</a></li>
+  </ul>
+  <div class="hud-status"><div class="hud-dot"></div>SYSTEM ONLINE · 1142</div>
+</nav><section style="position:relative;min-height:60vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;overflow:hidden;text-align:left;">
+  <div class="vortex-grid" style="opacity:.5;"></div>
+  <div class="orb orb-p" style="opacity:.6;"></div>
+  <div class="orb orb-c" style="opacity:.5;top:auto;bottom:-60px;right:0;"></div>
+  <img src="assets/images/1772910919760.webp" alt="" style="position:absolute;top:50%;right:0;transform:translateY(-50%);width:38vw;max-width:500px;opacity:.22;pointer-events:none;filter:drop-shadow(0 0 40px var(--green)) saturate(1.3);">
+  <div style="position:relative;z-index:1;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--green);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s forwards;">Phase 03 · The Engine</div>
+    <img src="assets/images/1142_logo.png" alt="" style="height:52px;filter:drop-shadow(0 0 16px var(--green));margin-bottom:24px;opacity:0;animation:fadeUp .8s .15s forwards;display:block;">
+    <h1 style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(44px,7vw,100px);line-height:.92;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s .3s forwards;">
+      <span style="display:block;color:var(--white);">High-Performance</span>
+      <span style="display:block;color:var(--green);text-shadow:0 0 30px var(--green),0 0 60px var(--green)80;" class="glitch" data-text="Interactive">Interactive</span>
+      <span style="display:block;-webkit-text-stroke:1.5px var(--pink);color:transparent;">Tools</span>
+    </h1>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.6);max-width:560px;line-height:1.8;opacity:0;animation:fadeUp .9s .5s forwards;">Substance Combos Calculator. Withdrawal Timeline. Moonshot Detection System. Built to perform.</p>
+  </div>
+</section><div class="marquee-strip"><div class="marquee-track">
+  <div class="marquee-item">COMBO CALCULATOR<span class="sep">◆</span>WITHDRAWAL TIMELINE<span class="sep">◆</span>RISK SCORING<span class="sep">◆</span>HARM REDUCTION<span class="sep">◆</span>MOONSHOT DETECTION<span class="sep">◆</span>REAL-TIME ANALYSIS<span class="sep">◆</span></div>
+  <div class="marquee-item">COMBO CALCULATOR<span class="sep">◆</span>WITHDRAWAL TIMELINE<span class="sep">◆</span>RISK SCORING<span class="sep">◆</span>HARM REDUCTION<span class="sep">◆</span>MOONSHOT DETECTION<span class="sep">◆</span>REAL-TIME ANALYSIS<span class="sep">◆</span></div>
+</div></div>
+<div id="combos"></div>
+<section class="section section-void">
+  <div class="section-label reveal">Harm Reduction Tool</div>
+  <h2 class="section-title reveal">4-Substance <span style="color:var(--cyan);">Combo</span> Calculator</h2>
+  <p class="section-sub reveal">Real-time interaction risk scoring for up to 4 substances. Educational purposes only. Always consult a professional.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px;" class="reveal">
+    <div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;">Substance 1</div>
+          <select id="s1" style="width:100%;background:var(--void2);border:1px solid var(--border-c);color:var(--white);font-family:'Share Tech Mono',monospace;font-size:11px;padding:10px 12px;outline:none;cursor:pointer;">
+            <option value="">— Select —</option>
+            <option>LSD</option><option>Methylphenidate</option><option>MDMA</option><option>Psilocybin</option><option>DMT</option><option>Cannabis</option><option>Alcohol</option><option>Caffeine</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--purple);text-transform:uppercase;margin-bottom:8px;">Substance 2</div>
+          <select id="s2" style="width:100%;background:var(--void2);border:1px solid var(--border-p);color:var(--white);font-family:'Share Tech Mono',monospace;font-size:11px;padding:10px 12px;outline:none;cursor:pointer;">
+            <option value="">— Select —</option>
+            <option>LSD</option><option>Methylphenidate</option><option>MDMA</option><option>Psilocybin</option><option>DMT</option><option>Cannabis</option><option>Alcohol</option><option>Caffeine</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--pink);text-transform:uppercase;margin-bottom:8px;">Substance 3 (opt.)</div>
+          <select id="s3" style="width:100%;background:var(--void2);border:1px solid var(--border-m);color:var(--white);font-family:'Share Tech Mono',monospace;font-size:11px;padding:10px 12px;outline:none;cursor:pointer;">
+            <option value="">— None —</option>
+            <option>LSD</option><option>Methylphenidate</option><option>MDMA</option><option>Psilocybin</option><option>DMT</option><option>Cannabis</option><option>Alcohol</option><option>Caffeine</option>
+          </select>
+        </div>
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--green);text-transform:uppercase;margin-bottom:8px;">Substance 4 (opt.)</div>
+          <select id="s4" style="width:100%;background:var(--void2);border:1px solid rgba(74,222,128,.3);color:var(--white);font-family:'Share Tech Mono',monospace;font-size:11px;padding:10px 12px;outline:none;cursor:pointer;">
+            <option value="">— None —</option>
+            <option>LSD</option><option>Methylphenidate</option><option>MDMA</option><option>Psilocybin</option><option>DMT</option><option>Cannabis</option><option>Alcohol</option><option>Caffeine</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="calcCombo()" class="btn-neon" style="width:100%;">⚡ CALCULATE RISK SCORE →</button>
+    </div>
+    <div id="combo-output" style="background:var(--void2);border:1px solid var(--border-p);padding:28px;min-height:200px;display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:.3em;text-transform:uppercase;">Select substances to calculate</div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.4;"></div>
+
+<div id="withdrawal"></div>
+<div style="position:relative;height:180px;overflow:hidden;">
+  <img src="assets/images/1772910840617.webp" alt="" style="position:absolute;right:0;top:0;height:100%;width:auto;object-fit:cover;filter:saturate(.6) brightness(.5);opacity:.8;">
+  <img src="assets/images/1772589402529.webp" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.5) brightness(.35);">
+  <div style="position:absolute;inset:0;background:linear-gradient(0deg,var(--void2) 0%,transparent 40%,transparent 60%,var(--void) 100%);"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(74,222,128,.1),transparent,rgba(0,240,255,.06));"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.6em;color:rgba(74,222,128,.5);text-transform:uppercase;">Withdrawal Timeline Generator · Evidence-Based</div>
+  </div>
+</div>
+
+<section class="section section-dark">
+  <div class="section-label reveal">Harm Reduction Tool</div>
+  <h2 class="section-title reveal">Withdrawal <span style="color:var(--green);">Timeline</span> Calculator</h2>
+  <p class="section-sub reveal">Evidence-based withdrawal estimates for crack cocaine, methamphetamine, and fentanyl. Not medical advice.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;" class="reveal">
+    <div>
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;">Substance</div>
+        <select id="wsub" style="width:100%;background:var(--void3);border:1px solid var(--border-c);color:var(--white);font-family:'Share Tech Mono',monospace;font-size:11px;padding:12px 14px;outline:none;cursor:pointer;">
+          <option value="crack">Crack Cocaine</option>
+          <option value="meth">Methamphetamine</option>
+          <option value="fent">Fentanyl</option>
+        </select>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--purple);text-transform:uppercase;margin-bottom:8px;">Duration of use — <span id="dur-v">3</span> years</div>
+        <input type="range" min="1" max="15" value="3" id="wdur" oninput="document.getElementById('dur-v').textContent=this.value" style="width:100%;accent-color:var(--cyan);cursor:pointer;">
+      </div>
+      <div style="margin-bottom:28px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.3em;color:var(--pink);text-transform:uppercase;margin-bottom:8px;">Daily amount — <span id="amt-v">0.3</span>g</div>
+        <input type="range" min="1" max="10" value="3" id="wamt" oninput="document.getElementById('amt-v').textContent=(this.value/10).toFixed(1)" style="width:100%;accent-color:var(--pink);cursor:pointer;">
+      </div>
+      <button onclick="calcWithdrawal()" class="btn-neon pink" style="width:100%;">📊 GENERATE TIMELINE →</button>
+    </div>
+    <div id="w-output" style="background:var(--void3);border:1px solid var(--border-c);padding:28px;min-height:260px;display:flex;align-items:center;justify-content:center;">
+      <div style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:.3em;text-transform:uppercase;">Awaiting input</div>
+    </div>
+  </div>
+  <div style="margin-top:20px;font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:.15em;color:var(--gray);background:var(--void3);border:1px solid var(--border-p);padding:16px 20px;" class="reveal">
+    ⚠ DISCLAIMER: For educational and harm reduction purposes only. This is not medical advice. If you or someone you know needs support, contact a healthcare professional or helpline.
+  </div>
+</section>
+
+<script>
+function calcCombo(){
+  const subs=[document.getElementById('s1').value,document.getElementById('s2').value,document.getElementById('s3').value,document.getElementById('s4').value].filter(Boolean);
+  if(subs.length<2){document.getElementById('combo-output').innerHTML='<div style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--pink);letter-spacing:.2em;">⚠ Select at least 2 substances</div>';return;}
+  const risks={LSD:5,Methylphenidate:6,MDMA:8,Psilocybin:4,DMT:6,Cannabis:3,Alcohol:9,Caffeine:2};
+  let base=subs.reduce((a,s)=>a+(risks[s]||5),0)/subs.length;
+  const combo=subs.length>2?base*1.3:base*1.1;
+  const score=Math.min(100,Math.round(combo*8));
+  const level=score<30?['LOW','var(--green)']:score<60?['MODERATE','var(--cyan)']:score<80?['HIGH','var(--pink)']:['EXTREME','#ff0000'];
+  document.getElementById('combo-output').innerHTML=`
+    <div style="width:100%;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.4em;color:var(--gray);text-transform:uppercase;margin-bottom:20px;">RISK ANALYSIS OUTPUT</div>
+      <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:72px;line-height:1;color:${level[1]};text-shadow:0 0 30px ${level[1]};margin-bottom:8px;">${score}</div>
+      <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:18px;color:${level[1]};letter-spacing:.2em;margin-bottom:16px;">${level[0]} RISK</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gray);letter-spacing:.15em;">${subs.join(' + ')}</div>
+      <div style="margin-top:16px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--gray);line-height:1.8;">Always research interactions independently.<br>Consider set, setting, and personal health factors.</div>
+    </div>`;
+}
+function calcWithdrawal(){
+  const sub=document.getElementById('wsub').value;
+  const dur=parseInt(document.getElementById('wdur').value);
+  const amt=parseFloat(document.getElementById('wamt').value)/10;
+  const d={crack:{n:'Crack Cocaine',peak:'24–72 hrs',acute:'1–2 wks',paws:'1–3 mo',note:'Psychological symptoms dominant. Intense cravings.'},meth:{n:'Methamphetamine',peak:'24–48 hrs',acute:'2–3 wks',paws:'2–6 mo',note:'Prolonged anhedonia. Sleep disruption common.'},fent:{n:'Fentanyl',peak:'12–36 hrs',acute:'5–10 days',paws:'3–12 mo',note:'Medical supervision strongly advised. High relapse risk.'}};
+  const info=d[sub];const sev=Math.min(10,Math.round(dur*.6+amt*4));
+  const sevC=sev<=3?'var(--green)':sev<=6?'var(--cyan)':sev<=8?'var(--pink)':'#ff4444';
+  const rows=[['Substance',info.n],['Duration',dur+' year'+(dur>1?'s':'')],['Daily Amount',amt.toFixed(1)+'g'],['Peak Withdrawal',info.peak],['Acute Phase',info.acute],['PAWS',info.paws],['Severity',`<span style="color:${sevC};font-weight:700">${sev}/10</span>`],['Note',info.note]];
+  let html='<div style="width:100%;"><div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.4em;color:var(--gray);text-transform:uppercase;margin-bottom:16px;">TIMELINE OUTPUT</div><table style="width:100%;border-collapse:collapse;">';
+  rows.forEach(([k,v],i)=>html+=`<tr style="${i%2===0?'background:rgba(255,255,255,.02)':''}"><td style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.2em;color:var(--gray);text-transform:uppercase;padding:8px 10px;border-bottom:1px solid rgba(139,92,246,.1);white-space:nowrap;">${k}</td><td style="font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(240,244,255,.7);padding:8px 10px;border-bottom:1px solid rgba(139,92,246,.1);">${v}</td></tr>`);
+  html+='</table></div>';
+  document.getElementById('w-output').innerHTML=html;
+}
+</script><footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/images/logo-full-tagline.png" alt="1142 Labs">
+      <p>1142 is a spiritual jailbreak. A neurodivergent fortress. A scientific underground. Est. Dec 22, 2019.</p>
+    </div>
+    <div class="footer-col"><h4>The Fortress</h4><ul>
+      <li><a href="index.html">The Void (Home)</a></li>
+      <li><a href="research.html">The Brain</a></li>
+      <li><a href="tools.html">The Engine</a></li>
+      <li><a href="archive.html">The Archive</a></li>
+      <li><a href="about.html">The Creator</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Research</h4><ul>
+      <li><a href="research.html">Breakthroughs</a></li>
+      <li><a href="research.html#chemicals">Chemical DB</a></li>
+      <li><a href="tools.html#combos">Combo Calc</a></li>
+      <li><a href="tools.html#withdrawal">Withdrawal Calc</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>About</h4><ul>
+      <li><a href="about.html">Cole EverDark</a></li>
+      <li><a href="about.html#personas">Persona Matrix</a></li>
+      <li><a href="archive.html#manifesto">The Manifesto</a></li>
+      <li><a href="archive.html#logs">Cole's Tab Corner</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 1142 Labs · Est. Dec 22nd 2019 · In loving memory of Katrina Jade Mutch Hasler ♥</p>
+    <div class="footer-badge"><div class="footer-dot"></div>AN EVERDARK PRODUCTION</div>
+  </div>
+</footer><script>
+(function(){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.feat-card,.ql-card,.ts-cell,.stat-box,.chem-card,.persona-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+  });
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.glitch').forEach(el=>{if(!el.dataset.text)el.dataset.text=el.textContent.trim();});
+})();
+</script>
+<script src="assets/fx.js" defer></script>
+</body></html>
