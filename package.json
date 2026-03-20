@@ -1,0 +1,8 @@
+{
+  "name": "11422",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p .vercel/output/static && cp -r . .vercel/output/static || true"
+  }
+}
