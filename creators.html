@@ -320,6 +320,25 @@
     <div class="footer-everdark"><div class="footer-dot"></div>An EverDark Production</div>
   </div>
 </footer>
+<script src="assets/fx-megaspec.js" defer></script>
+<script>
+window.addEventListener('load', function() {
+  if (!window.FXMega) return;
+  /* ── Base megaspec layer stack ── */
+  FXMega.texture.DataStreamFilaments.mount(document.body, {opacity:0.35, count:7});
+  FXMega.texture.CryoFogVapor.mount(document.body, {opacity:0.18});
+  FXMega.texture.PressurePlateGlow.mount(document.body, {opacity:0.4});
+  FXMega.texture.QuantumFieldRipple.mount(document.body, {opacity:0.28});
+  FXMega.texture.MicroLEDPixelMatrix.mount(document.body, {opacity:0.35, cellSize:5});
+  /* ── Text animations ── */
+  var h1 = document.querySelector('h1');
+  if (h1) FXMega.text.liquidChromaticSlide(h1, {duration:1000, delay:150});
+  var h2s = document.querySelectorAll('h2');
+  h2s.forEach(function(el, i) {
+    if (i < 4) FXMega.text.cosmicPulseReveal(el, {duration:900, delay:200 + i*80});
+  });
+});
+</script>
 <script src="assets/fx.js" defer></script>
 <script>
 (function(){
