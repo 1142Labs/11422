@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="assets/fonts/Streamster.ttf" as="font" type="font/truetype" crossorigin>
+<link rel="preload" href="assets/global.css" as="style">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cole's Tab Corner · 1142 Labs: Tomorrow's Solutions Today</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/global.css">
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 6px currentColor}50%{opacity:.55;box-shadow:0 0 18px currentColor,0 0 32px currentColor}}
+
+/* ── BLOG GRID ── */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:48px;}
+@media(max-width:900px){.blog-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.blog-grid{grid-template-columns:1fr;}}
+
+.blog-card{
+  position:relative;background:var(--void2);border:1px solid var(--border-p);
+  padding:24px;cursor:default;transition:border-color .3s,background .3s;
+  display:flex;flex-direction:column;gap:12px;
+}
+.blog-card:hover{border-color:rgba(0,240,255,.35);background:rgba(0,240,255,.02);}
+.blog-card .top-line{height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));margin-bottom:4px;}
+.blog-card .top-line.pink{background:linear-gradient(90deg,var(--pink),var(--purple));}
+.blog-card .top-line.green{background:linear-gradient(90deg,var(--green),var(--cyan));}
+.blog-card .top-line.purple{background:linear-gradient(90deg,var(--purple),var(--pink));}
+
+.bc-era{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--gray);text-transform:uppercase;}
+.bc-title{font-family:'Orbitron',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--white);line-height:1.3;flex:1;}
+.bc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:auto;}
+.bc-tag{font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:.15em;padding:2px 8px;border:1px solid;text-transform:uppercase;}
+.bc-tag.t-c{color:var(--cyan);border-color:rgba(0,240,255,.3);background:rgba(0,240,255,.06);}
+.bc-tag.t-p{color:var(--purple);border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.06);}
+.bc-tag.t-pk{color:var(--pink);border-color:rgba(236,72,153,.3);background:rgba(236,72,153,.06);}
+.bc-tag.t-g{color:var(--green);border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.06);}
+.bc-tag.t-w{color:rgba(240,244,255,.5);border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.03);}
+
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px;}
+.filter-btn{
+  font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.2em;
+  padding:6px 16px;border:1px solid var(--border-p);background:transparent;
+  color:var(--gray);text-transform:uppercase;cursor:pointer;transition:all .2s;
+}
+.filter-btn:hover,.filter-btn.active{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.07);}
+.filter-btn.active.pink{color:var(--pink);border-color:var(--pink);background:rgba(236,72,153,.07);}
+.filter-btn.active.purple{color:var(--purple);border-color:var(--purple);background:rgba(139,92,246,.08);}
+.filter-btn.active.green{color:var(--green);border-color:var(--green);background:rgba(74,222,128,.07);}
+
+/* ── VERSION TIMELINE ── */
+.ver-row{display:flex;gap:24px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ver-num{font-family:'Orbitron',sans-serif;font-weight:900;font-size:22px;min-width:64px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ver-body{flex:1;}
+.ver-name{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--white);margin-bottom:4px;}
+.ver-desc{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.5);line-height:1.6;}
+.ver-date{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.2em;color:var(--gray);margin-top:6px;}
+</style>
+<meta name="description" content="Cole's Tab Corner — the complete archive of 1142 Labs blog posts, research journals, and field notes from every era of the project.">
+<meta name="keywords" content="Cole's Tab Corner, 1142 Labs blog, research journal, psychedelic archive, Cole EverDark">
+<meta name="author" content="Cole EverDark · 1142 Labs">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#00F0FF">
+<link rel="canonical" href="https://1142labs.com/blog">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://1142labs.com/blog">
+<meta property="og:title" content="Cole's Tab Corner · 1142 Labs: Tomorrow's Solutions Today">
+<meta property="og:description" content="Cole's Tab Corner — the complete archive of 1142 Labs blog posts, research journals, and field notes from every era of the project.">
+<meta property="og:image" content="https://1142labs.com/assets/images/og-1142labs.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:site_name" content="1142 Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cole's Tab Corner · 1142 Labs: Tomorrow's Solutions Today">
+<meta name="twitter:description" content="Cole's Tab Corner — the complete archive of 1142 Labs blog posts, research journals, and field notes from every era of the project.">
+<meta name="twitter:image" content="https://1142labs.com/assets/images/og-1142labs.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Blog","name":"Cole's Tab Corner","url":"https://1142labs.com/blog","description":"The complete archive of 1142 Labs research journals and field notes.","author":{"@type":"Person","name":"Cole EverDark"}}
+</script>
+</head>
+<body data-page="lore">
+<div id="cursor"></div><div id="cursor-ring"></div>
+<div id="nav-overlay"></div>
+<aside id="nav-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">
+      <img src="assets/images/1142_logo.png" alt="1142 Labs">
+      <div><span class="drawer-logo-name">1142 LABS</span><span class="drawer-logo-sub">Tomorrow's Solutions Today</span></div>
+    </a>
+    <button class="drawer-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">
+      <div class="drawer-section-label">Core</div>
+      <a href="index.html" class="drawer-link"><span class="dl-icon">&#x2B21;</span>Home</a>
+      <a href="about.html" class="drawer-link"><span class="dl-icon">&#x25C8;</span>The Creator</a>
+      <a href="vision.html" class="drawer-link"><span class="dl-icon">&#x25C9;</span>Vision</a>
+      <a href="creators.html" class="drawer-link"><span class="dl-icon">&#x25CE;</span>Creators</a>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Research</div>
+      <a href="research_breakthroughs.html" class="drawer-link"><span class="dl-icon">&#x2697;</span>Research &amp; Breakthroughs</a>
+      <a href="1142_chemicals.html" class="drawer-link"><span class="dl-icon">&#x2B21;</span>Chemicals</a>
+      <a href="chemlog.html" class="drawer-link"><span class="dl-icon">&#x25C6;</span>Chem Log</a>
+    </div>
+    <div class="drawer-section">
+            <div class="drawer-section-label">Explore</div>
+      <a href="blog.html" class="drawer-link"><span class="dl-icon">&#x25A4;</span>Cole's Tab Corner</a>
+      <a href="calculators.html" class="drawer-link"><span class="dl-icon">&#x2699;</span>Calculators</a>
+      <a href="resources.html" class="drawer-link"><span class="dl-icon">&#x25C8;</span>Resources</a>
+      <a href="1142-toke-times.html" class="drawer-link"><span class="dl-icon">&#x231A;</span>Toke Times</a>
+      <a href="archive.html" class="drawer-link"><span class="dl-icon">&#x2584;</span>Archive</a>
+      <a href="posters.html" class="drawer-link"><span class="dl-icon">&#x25FC;</span>Posters</a>
+      <a href="socials.html" class="drawer-link"><span class="dl-icon">&#x25CE;</span>Network</a>
+    </div>
+  </nav>
+  <div class="drawer-foot">An EverDark Production &middot; Est. Dec 22, 2019</div>
+</aside>
+<nav class="hud" id="hud">
+  <a href="index.html" class="hud-logo">
+    <img src="assets/images/1142_logo.png" alt="1142 Labs">
+    <div class="hud-logo-text"><span class="hud-logo-name">1142 LABS</span><span class="hud-logo-sub">Tomorrow's Solutions Today</span></div>
+  </a>
+  <ul class="hud-nav">
+    <li class="has-mega">
+      <a href="research_breakthroughs.html" class="hud-link">Research <span class="hud-arrow">▾</span></a>
+      <div class="mega-panel"><div class="mega-grid">
+        <a href="research_breakthroughs.html" class="mega-item"><span class="mega-icon">⚗</span><span class="mega-label">Research Hub</span><span class="mega-desc">Studies &amp; breakthroughs</span></a>
+        <a href="1142_chemicals.html" class="mega-item"><span class="mega-icon">⬡</span><span class="mega-label">Chemicals DB</span><span class="mega-desc">Full compound database</span></a>
+        <a href="chemlog.html" class="mega-item"><span class="mega-icon">◆</span><span class="mega-label">Chem Log</span><span class="mega-desc">Research session logs</span></a>
+      </div></div>
+    </li>
+    <li class="has-mega">
+      <a href="about.html" class="hud-link">About <span class="hud-arrow">▾</span></a>
+      <div class="mega-panel"><div class="mega-grid">
+        <a href="about.html" class="mega-item"><span class="mega-icon">◈</span><span class="mega-label">The Creator</span><span class="mega-desc">Cole EverDark</span></a>
+        <a href="vision.html" class="mega-item"><span class="mega-icon">◉</span><span class="mega-label">Vision</span><span class="mega-desc">Mission &amp; future</span></a>
+        <a href="creators.html" class="mega-item"><span class="mega-icon">◎</span><span class="mega-label">Creators</span><span class="mega-desc">The persona matrix</span></a>
+        <a href="archive.html" class="mega-item"><span class="mega-icon">▤</span><span class="mega-label">Archive</span><span class="mega-desc">Logs &amp; manifesto</span></a>
+      </div></div>
+    </li>
+    <li class="has-mega">
+      <a href="blog.html" class="hud-link">Blog <span class="hud-arrow">▾</span></a>
+      <div class="mega-panel"><div class="mega-grid">
+        <a href="blog.html" class="mega-item"><span class="mega-icon">▤</span><span class="mega-label">Cole's Tab Corner</span><span class="mega-desc">Full post archive</span></a>
+        <a href="calculators.html" class="mega-item"><span class="mega-icon">⚙</span><span class="mega-label">Calculators</span><span class="mega-desc">Tools &amp; utilities</span></a>
+        <a href="resources.html" class="mega-item"><span class="mega-icon">◈</span><span class="mega-label">Resources</span><span class="mega-desc">References &amp; links</span></a>
+        <a href="1142-toke-times.html" class="mega-item"><span class="mega-icon">🕐</span><span class="mega-label">Toke Times</span><span class="mega-desc">The ritual timeline</span></a>
+        <a href="posters.html" class="mega-item"><span class="mega-icon">◼</span><span class="mega-label">Posters</span><span class="mega-desc">EverDark visuals</span></a>
+        <a href="socials.html" class="mega-item"><span class="mega-icon">◎</span><span class="mega-label">Network</span><span class="mega-desc">Connect &amp; follow</span></a>
+      </div></div>
+    </li>
+  </ul>
+  <div class="hud-right">
+    <div class="hud-status"><div class="hud-dot"></div><span>SYSTEM ONLINE</span></div>
+    <button class="hud-hamburger" id="nav-open" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section style="position:relative;min-height:52vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 72px;overflow:hidden;">
+  <div class="vortex-grid" style="opacity:.4;"></div>
+  <div class="orb orb-p" style="opacity:.5;"></div>
+  <div style="position:relative;z-index:1;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--purple);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s forwards;">Cole's Tab Corner · Est. 2020</div>
+    <h1 style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(36px,6vw,80px);line-height:.92;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp .9s .25s forwards;">
+      <span style="display:block;color:var(--white);">The</span>
+      <span style="display:block;color:var(--purple);text-shadow:0 0 30px var(--purple);" class="glitch" data-text="Complete">Complete</span>
+      <span style="display:block;-webkit-text-stroke:1.5px var(--cyan);color:transparent;">Archive</span>
+    </h1>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.55);max-width:520px;line-height:1.8;opacity:0;animation:fadeUp .9s .4s forwards;">Every post. Every field note. Every dispatch from the edge of understanding. All eras. All versions. All signal.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,auto);gap:20px;margin-top:36px;opacity:0;animation:fadeUp .9s .55s forwards;max-width:440px;">
+      <div style="text-align:center;">
+        <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;color:var(--cyan);">69</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--gray);">POSTS</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;color:var(--pink);">5</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--gray);">VERSIONS</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;color:var(--purple);">4</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--gray);">ERAS</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:26px;color:var(--green);">∞</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:7px;letter-spacing:.2em;color:var(--gray);">SIGNAL</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-strip"><div class="marquee-track">
+  <div class="marquee-item">COLE'S TAB CORNER<span class="sep">◆</span>RESEARCH LOGS<span class="sep">◆</span>FIELD NOTES<span class="sep">◆</span>SUBSTANCE CHRONICLES<span class="sep">◆</span>ORIGIN LORE<span class="sep">◆</span>ST. JIMMY CANON<span class="sep">◆</span>V2.0 · V3.0 · V5.0<span class="sep">◆</span></div>
+  <div class="marquee-item">COLE'S TAB CORNER<span class="sep">◆</span>RESEARCH LOGS<span class="sep">◆</span>FIELD NOTES<span class="sep">◆</span>SUBSTANCE CHRONICLES<span class="sep">◆</span>ORIGIN LORE<span class="sep">◆</span>ST. JIMMY CANON<span class="sep">◆</span>V2.0 · V3.0 · V5.0<span class="sep">◆</span></div>
+</div></div>
+
+<!-- ── VERSION HISTORY ── -->
+<section class="section section-void">
+  <div class="section-label reveal">Platform Genealogy</div>
+  <h2 class="section-title reveal">Site <span style="color:var(--cyan);">Versions</span></h2>
+  <p class="section-sub reveal">Six iterations of the same unstoppable idea.</p>
+  <div style="margin-top:48px;">
+
+    <div class="ver-row reveal">
+      <div class="ver-num">1.0</div>
+      <div class="ver-body">
+        <div class="ver-name">11-42.ca · The First Broadcast</div>
+        <div class="ver-desc">The original platform. Raw psychedelic field notes published direct. First public sharing of personal experiences and chemical observations. The seed that cracked the concrete.</div>
+        <div class="ver-date">JUL 2020 · LAUNCH</div>
+      </div>
+    </div>
+
+    <div class="ver-row reveal d1">
+      <div class="ver-num" style="background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">2.0</div>
+      <div class="ver-body">
+        <div class="ver-name">1142 OFFICIAL SITE 2.0 · Wix Era Begins</div>
+        <div class="ver-desc">Migrated to Wix. First structured CMS. 27 blog posts published across substance research, chronicles, and origin lore. Sections for LSD-25, Psilocybin, Mescaline, DMT, PCP. The research vocabulary begins to formalize.</div>
+        <div class="ver-date">DEC 2022 · CREATED · coleeverdark.wixsite.com/website-1</div>
+      </div>
+    </div>
+
+    <div class="ver-row reveal d2">
+      <div class="ver-num" style="background:linear-gradient(135deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">3.0</div>
+      <div class="ver-body">
+        <div class="ver-name">1142 v3.0 · The Expansion</div>
+        <div class="ver-desc">Peak blog era. 49+ posts across every category — origins, substances, St. Jimmy lore, field reports, Katrina tributes, persona dispatches. The Persona Matrix fully documented. The legend of Saint Jimmy formalized in writing for the first time.</div>
+        <div class="ver-date">2023 · FULL ARCHIVE BUILD</div>
+      </div>
+    </div>
+
+    <div class="ver-row reveal d1">
+      <div class="ver-num" style="background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">4.0</div>
+      <div class="ver-body">
+        <div class="ver-name">Creator of 1147 · Specialized Fork</div>
+        <div class="ver-desc">Experimental branch. Research deepens into methylphenidate series and Down Syndrome neuroprotection. The 1147 designation represents a specific chemical variant research thread — a side-channel exploration that fed back into the main 1142 canon.</div>
+        <div class="ver-date">2023–2024 · RESEARCH FORK</div>
+      </div>
+    </div>
+
+    <div class="ver-row reveal d2">
+      <div class="ver-num" style="background:linear-gradient(135deg,var(--pink),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">5.0</div>
+      <div class="ver-body">
+        <div class="ver-name">The Edge of Understanding / Breakthroughs Today</div>
+        <div class="ver-desc">Dual-track v5: "Edge of Understanding" and "Future Breakthroughs Today." Full CMS deployment — categories (Journal Entries, How To), projects gallery, PDF library schema, product/store infrastructure. The ecosystem broadens from blog to platform.</div>
+        <div class="ver-date">2025 · PLATFORM EXPANSION</div>
+      </div>
+    </div>
+
+    <div class="ver-row reveal d3" style="border-bottom:none;">
+      <div class="ver-num" style="background:linear-gradient(135deg,var(--cyan),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">6.0</div>
+      <div class="ver-body">
+        <div class="ver-name" style="color:var(--cyan);">1142labs.com · The Fortress</div>
+        <div class="ver-desc">Full custom build. No CMS dependency. Pure HTML/CSS/JS with FX1142 visual system. 13-page ecosystem spanning research, gaming, about, vision, archive, chemicals, chemlog, blog, calculators, resources, toke times, posters, network. Toronto operations. This is the final form.</div>
+        <div class="ver-date" style="color:var(--cyan);">2025–2026 · ACTIVE · IN DEVELOPMENT</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--purple),var(--pink),transparent);opacity:.5;"></div>
+
+<!-- ── CHRONICLES ── -->
+<div id="chronicles"></div>
+<section class="section section-dark">
+  <div class="section-label reveal">Era I &amp; II · 2020–2022</div>
+  <h2 class="section-title reveal"><span style="color:var(--pink);">Chronicles</span></h2>
+  <p class="section-sub reveal">Dated dispatches. Time-stamped reality from the front lines.</p>
+  <div class="blog-grid">
+
+    <div class="blog-card reveal d1"><div class="top-line pink"></div>
+      <div class="bc-era">DEC 22, 2019 · ORIGIN</div>
+      <div class="bc-title">11:42 PM — Dec 22nd 2019</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Origin</span><span class="bc-tag t-c">Sacred Date</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line"></div>
+      <div class="bc-era">JAN 2021</div>
+      <div class="bc-title">January 22nd — 11:42 · 2021</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Chronicle</span><span class="bc-tag t-p">11:42 Ritual</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">FEB–MAR 2021</div>
+      <div class="bc-title">March 22nd · 2021</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Chronicle</span><span class="bc-tag t-w">Monthly Ritual</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line"></div>
+      <div class="bc-era">MAY 2022</div>
+      <div class="bc-title">May 7th 2022 — The Accidental 600</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Field Report</span><span class="bc-tag t-c">Dosage Event</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line green"></div>
+      <div class="bc-era">MAY 2022</div>
+      <div class="bc-title">May 11th</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Chronicle</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line pink"></div>
+      <div class="bc-era">DEC 2022</div>
+      <div class="bc-title">Dec 22nd — 2022</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Anniversary</span><span class="bc-tag t-c">Sacred Date</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line"></div>
+      <div class="bc-era">MAR 2023</div>
+      <div class="bc-title">1142 March 22nd 2023</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Chronicle</span><span class="bc-tag t-p">11:42 Ritual</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line purple"></div>
+      <div class="bc-era">MAY 2023</div>
+      <div class="bc-title">May 22nd 2023</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Chronicle</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line green"></div>
+      <div class="bc-era">JUN 2023</div>
+      <div class="bc-title">June 22nd 2023</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Chronicle</span><span class="bc-tag t-c">Sacred Date</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line pink"></div>
+      <div class="bc-era">RECURRING</div>
+      <div class="bc-title">December 22nd</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Foundation Day</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line"></div>
+      <div class="bc-era">FIELD ENTRY</div>
+      <div class="bc-title">Happy 1142</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Ritual</span><span class="bc-tag t-w">Celebration</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line green"></div>
+      <div class="bc-era">RECURRING</div>
+      <div class="bc-title">Happy 420</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Seasonal</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),transparent);opacity:.4;"></div>
+
+<!-- ── RESEARCH POSTS ── -->
+<div id="research-posts"></div>
+<section class="section section-void">
+  <div class="section-label reveal">Substance Research · Science Posts</div>
+  <h2 class="section-title reveal">Research <span style="color:var(--green);">Posts</span></h2>
+  <p class="section-sub reveal">The pharmacological dispatches. Every compound. Every experiment.</p>
+  <div class="blog-grid">
+
+    <div class="blog-card reveal d1"><div class="top-line"></div>
+      <div class="bc-era">COMPOUND PROFILE · LSD SERIES</div>
+      <div class="bc-title">LSD-25 / LSD 25</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Psychedelic</span><span class="bc-tag t-p">Profile</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line pink"></div>
+      <div class="bc-era">COMPOUND PROFILE</div>
+      <div class="bc-title">Psilocybin</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Psychedelic</span><span class="bc-tag t-c">Profile</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">COMPOUND PROFILE</div>
+      <div class="bc-title">DMT</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Psychedelic</span><span class="bc-tag t-c">Tryptamine</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line green"></div>
+      <div class="bc-era">COMPOUND PROFILE</div>
+      <div class="bc-title">Mescaline</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Psychedelic</span><span class="bc-tag t-c">Phenethylamine</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line"></div>
+      <div class="bc-era">COMPOUND PROFILE</div>
+      <div class="bc-title">PCP</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Dissociative</span><span class="bc-tag t-p">Profile</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line pink"></div>
+      <div class="bc-era">RESEARCH POST · NOVEL COMPOUND</div>
+      <div class="bc-title">2C-B</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Psychedelic</span><span class="bc-tag t-c">Phenethylamine</span><span class="bc-tag t-p">Novel</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line purple"></div>
+      <div class="bc-era">NOVEL COMPOUND · LSD VARIANT</div>
+      <div class="bc-title">METHYLYSERGIC TABS</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Lysergic</span><span class="bc-tag t-pk">Novel</span><span class="bc-tag t-c">1142 Discovery</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line green"></div>
+      <div class="bc-era">HOW-TO GUIDE</div>
+      <div class="bc-title">Home Made Acid</div>
+      <div class="bc-tags"><span class="bc-tag t-g">How To</span><span class="bc-tag t-c">Synthesis Notes</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line"></div>
+      <div class="bc-era">HOW-TO GUIDE</div>
+      <div class="bc-title">How to Make Sheets of LSD for $20</div>
+      <div class="bc-tags"><span class="bc-tag t-c">How To</span><span class="bc-tag t-w">Cost Analysis</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line pink"></div>
+      <div class="bc-era">FIELD REPORT · LSD</div>
+      <div class="bc-title">Had This Really Good LSD — Check It Out</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Field Report</span><span class="bc-tag t-c">LSD</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line green"></div>
+      <div class="bc-era">RESEARCH THEORY · STIMULANTS</div>
+      <div class="bc-title">Using Speed to Slow Down the Aging Process</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Stimulant</span><span class="bc-tag t-p">Theory</span><span class="bc-tag t-c">Longevity</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">METHYLPHENIDATE SERIES</div>
+      <div class="bc-title">Methlphenithings</div>
+      <div class="bc-tags"><span class="bc-tag t-p">MPH Series</span><span class="bc-tag t-c">Stimulant</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line"></div>
+      <div class="bc-era">OCS RESEARCH</div>
+      <div class="bc-title">Cole's Newest OCS</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Cannabis</span><span class="bc-tag t-w">OCS Review</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line pink"></div>
+      <div class="bc-era">EDGE PROTOCOL · SECRET</div>
+      <div class="bc-title">SECRET EDGE TOKE TIMES — SSSHHHHH</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Toke Times</span><span class="bc-tag t-p">Edge Protocol</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line green"></div>
+      <div class="bc-era">RESEARCH POST · SOURCE</div>
+      <div class="bc-title">Ergo Is My Source</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Sourcing</span><span class="bc-tag t-w">Research</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--purple),transparent);opacity:.45;"></div>
+
+<!-- ── LORE & ORIGIN ── -->
+<div id="lore"></div>
+<section class="section section-dark">
+  <div class="section-label reveal">Canon · St. Jimmy · Origin</div>
+  <h2 class="section-title reveal">Lore <span style="color:var(--purple);">&amp; Origin</span></h2>
+  <p class="section-sub reveal">The canon posts. The mythology. The defining texts of the 1142 universe.</p>
+  <div class="blog-grid">
+
+    <div class="blog-card reveal d1" style="border-color:rgba(236,72,153,.25);background:rgba(236,72,153,.02);">
+      <div class="top-line pink"></div>
+      <div class="bc-era">ORIGIN POST · FOUNDATIONAL</div>
+      <div class="bc-title">1142 ORIGINS</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Origin</span><span class="bc-tag t-c">Foundational</span></div>
+    </div>
+
+    <div class="blog-card reveal d2" style="border-color:rgba(236,72,153,.2);">
+      <div class="top-line pink"></div>
+      <div class="bc-era">ORIGIN · DEC 22 2019</div>
+      <div class="bc-title">Dec 22nd, 2019 — 11:42 PM</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">The Night</span><span class="bc-tag t-p">Foundational</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">MANIFESTO POST</div>
+      <div class="bc-title">The REAL 1142</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Manifesto</span><span class="bc-tag t-c">Philosophy</span></div>
+    </div>
+
+    <div class="blog-card reveal d1" style="border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.02);">
+      <div class="top-line purple"></div>
+      <div class="bc-era">ST. JIMMY CANON</div>
+      <div class="bc-title">The Legend of Saint Jimmy</div>
+      <div class="bc-tags"><span class="bc-tag t-p">St. Jimmy</span><span class="bc-tag t-pk">Canon</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line purple"></div>
+      <div class="bc-era">ST. JIMMY CANON · CLASSIFIED</div>
+      <div class="bc-title">St. Jimmy's Forbidden / Sacred Secrets</div>
+      <div class="bc-tags"><span class="bc-tag t-p">St. Jimmy</span><span class="bc-tag t-pk">Lore</span><span class="bc-tag t-c">Restricted</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line"></div>
+      <div class="bc-era">FOREWORD · FROM THE CREATOR</div>
+      <div class="bc-title">A Forward from Our Creator</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Manifesto</span><span class="bc-tag t-w">Creator Note</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line pink"></div>
+      <div class="bc-era">ORIGIN STORY</div>
+      <div class="bc-title">Our Origins</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Origin</span><span class="bc-tag t-c">History</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line pink"></div>
+      <div class="bc-era">MEMORIAL · KATRINA</div>
+      <div class="bc-title">The Life Story of Katrina Jade Halser</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Katrina</span><span class="bc-tag t-p">Memorial</span><span class="bc-tag t-c">Core</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">STATE OF THE UNION</div>
+      <div class="bc-title">The State of the Union</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Manifesto</span><span class="bc-tag t-w">Status Report</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line green"></div>
+      <div class="bc-era">SPONSORSHIP DOCTRINE</div>
+      <div class="bc-title">Definition of Sponsorship</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Business</span><span class="bc-tag t-c">Philosophy</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line"></div>
+      <div class="bc-era">EVA'S NETWORK</div>
+      <div class="bc-title">Eva's Foundation</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Network</span><span class="bc-tag t-w">Community</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line pink"></div>
+      <div class="bc-era">EVA'S MANAGEMENT</div>
+      <div class="bc-title">Manager of Eva's Satellite and Others</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Management</span><span class="bc-tag t-w">Network</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--green),transparent);opacity:.4;"></div>
+
+<!-- ── FIELD REPORTS ── -->
+<section class="section section-void">
+  <div class="section-label reveal">Field Reports &amp; Dispatches</div>
+  <h2 class="section-title reveal">Field <span style="color:var(--cyan);">Reports</span></h2>
+  <p class="section-sub reveal">On-the-ground dispatches. Raw signal from the field.</p>
+  <div class="blog-grid">
+
+    <div class="blog-card reveal d1"><div class="top-line"></div>
+      <div class="bc-era">RELOCATION · 2021</div>
+      <div class="bc-title">Moved to Peterborough</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Relocation</span><span class="bc-tag t-w">Field Report</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line purple"></div>
+      <div class="bc-era">FIELD REPORT</div>
+      <div class="bc-title">Trip to Peterborough</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Travel</span><span class="bc-tag t-w">Field Report</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line pink"></div>
+      <div class="bc-era">NIGHT FIELD REPORT</div>
+      <div class="bc-title">The Night Trip</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Night Session</span><span class="bc-tag t-c">Field Report</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line green"></div>
+      <div class="bc-era">SUMMER RETROSPECTIVE</div>
+      <div class="bc-title">Last Summer</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Retrospective</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line"></div>
+      <div class="bc-era">EXPLANATION POST</div>
+      <div class="bc-title">Explaining the Last Year I Got Trolled</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Personal</span><span class="bc-tag t-w">Explanation</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line pink"></div>
+      <div class="bc-era">FRAUD ALERT · PUBLIC WARNING</div>
+      <div class="bc-title">FRAUD ALERT — William Harrison AKA Terrance Phillips</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Warning</span><span class="bc-tag t-p">Public Alert</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line purple"></div>
+      <div class="bc-era">SECURITY REPORT</div>
+      <div class="bc-title">Stalkers</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Security</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line purple"></div>
+      <div class="bc-era">SECURITY REPORT · ONGOING</div>
+      <div class="bc-title">Repeat Stalkers — C and V</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Security</span><span class="bc-tag t-pk">Ongoing</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line pink"></div>
+      <div class="bc-era">SECURITY REPORT</div>
+      <div class="bc-title">Evil Ex Neighbours</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Personal</span><span class="bc-tag t-w">Conflict</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line green"></div>
+      <div class="bc-era">SYSTEM UPDATE</div>
+      <div class="bc-title">Late on Updates — Desktop Is Fucked</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Tech</span><span class="bc-tag t-w">Status</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line"></div>
+      <div class="bc-era">SYSTEM UPDATE</div>
+      <div class="bc-title">Updates / I USE DESKTOP</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Status</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">SITE UPDATE</div>
+      <div class="bc-title">Change in URL</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Meta</span><span class="bc-tag t-w">Migration</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line pink"></div>
+      <div class="bc-era">IMPERSONATION ALERT</div>
+      <div class="bc-title">Some Imposter</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Security</span><span class="bc-tag t-w">Alert</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line green"></div>
+      <div class="bc-era">VENUE DISPATCH</div>
+      <div class="bc-title">PHILMORES</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Venue</span><span class="bc-tag t-w">Toronto</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line"></div>
+      <div class="bc-era">CREATING PSYCHOSIS</div>
+      <div class="bc-title">Creating Psychosis in 2 Lesbians</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Case Study</span><span class="bc-tag t-p">Psychosis</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line purple"></div>
+      <div class="bc-era">LINKS POST</div>
+      <div class="bc-title">Our Links</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Network</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line pink"></div>
+      <div class="bc-era">SITE STICKER</div>
+      <div class="bc-title">Site Sticker</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Branding</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line green"></div>
+      <div class="bc-era">CHECK THIS OUT</div>
+      <div class="bc-title">Check This Out</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Misc</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line"></div>
+      <div class="bc-era">PARTNERSHIP</div>
+      <div class="bc-title">SPONSORED BY JBL</div>
+      <div class="bc-tags"><span class="bc-tag t-c">Sponsorship</span><span class="bc-tag t-w">Partnership</span></div>
+    </div>
+
+    <div class="blog-card reveal d2"><div class="top-line pink"></div>
+      <div class="bc-era">1142 TOKE TIMES</div>
+      <div class="bc-title">1142 Toke Times</div>
+      <div class="bc-tags"><span class="bc-tag t-pk">Protocol</span><span class="bc-tag t-c">Ritual</span></div>
+    </div>
+
+    <div class="blog-card reveal d3"><div class="top-line purple"></div>
+      <div class="bc-era">LATE NIGHT THESIS</div>
+      <div class="bc-title">Fake Fenty Allure for Thesis — But I've Been Up for Fucking Ever</div>
+      <div class="bc-tags"><span class="bc-tag t-p">Late Night</span><span class="bc-tag t-w">Raw</span></div>
+    </div>
+
+    <div class="blog-card reveal d1"><div class="top-line green"></div>
+      <div class="bc-era">MAY 2022 FOOTAGE</div>
+      <div class="bc-title">May 22nd Footage</div>
+      <div class="bc-tags"><span class="bc-tag t-g">Video</span><span class="bc-tag t-w">Archive</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CLOSING ── -->
+<section class="section section-darker" style="text-align:center;">
+  <div class="reveal" style="max-width:640px;margin:0 auto;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--gray);margin-bottom:32px;">COLE'S TAB CORNER · FULL ARCHIVE</div>
+    <div style="border:1px solid var(--border-c);padding:40px;background:rgba(0,240,255,.02);">
+      <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(48px,10vw,96px);color:var(--cyan);text-shadow:0 0 40px var(--cyan),0 0 80px rgba(0,240,255,.3);line-height:1;margin-bottom:16px;">69</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.35em;color:var(--gray);margin-bottom:16px;">POSTS RECOVERED FROM V2.0 → V5.0</div>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:300;color:rgba(240,244,255,.45);line-height:1.7;">Every one of these was written by Cole EverDark across five iterations of the same unstoppable idea. The platform changed. The voice never did.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-glow-c"></div>
+  <div class="footer-glow-p"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-brand-logo">
+        <img src="assets/images/1142_logo.png" alt="1142 Labs">
+        <div><span class="footer-brand-name">1142 LABS</span><span class="footer-brand-tagline">Tomorrow's Solutions Today</span></div>
+      </a>
+      <p class="footer-brand-desc">A spiritual jailbreak. A neurodivergent fortress. A scientific underground. Est. Dec 22, 2019.</p>
+      <div class="footer-tags"><span class="footer-tag">⚗ Research</span><span class="footer-tag">🧠 Neurodivergent</span><span class="footer-tag">🔓 Liberation</span></div>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title">Research</h4>
+      <ul>
+        <li><a href="research_breakthroughs.html">Research Hub</a></li>
+        <li><a href="1142_chemicals.html">Chemicals DB</a></li>
+        <li><a href="chemlog.html">Chem Log</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title">About</h4>
+      <ul>
+        <li><a href="about.html">The Creator</a></li>
+        <li><a href="about.html#origin-story">Origin Story</a></li>
+        <li><a href="about.html#personas">Persona Matrix</a></li>
+        <li><a href="vision.html">Vision</a></li>
+        <li><a href="creators.html">Creators</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title">Explore</h4>
+      <ul>
+        
+        <li><a href="blog.html">Cole's Tab Corner</a></li>
+        <li><a href="calculators.html">Calculators</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="1142-toke-times.html">Toke Times</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="posters.html">Posters</a></li>
+        <li><a href="socials.html">Network</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">
+      <p>© 1142 Labs · Est. Dec 22nd 2019</p>
+      <p class="footer-katrina">In loving memory of Katrina Jade Mutch Hasler ♥</p>
+    </div>
+    <div class="footer-everdark"><div class="footer-dot"></div>An EverDark Production</div>
+  </div>
+</footer>
+<script>
+(function(){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  if(!cur||!ring)return;
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.blog-card,.feat-card,.ql-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+  });
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.glitch').forEach(el=>{if(!el.dataset.text)el.dataset.text=el.textContent.trim();});
+  const navOpen=document.getElementById('nav-open'),navClose=document.getElementById('nav-close'),drawer=document.getElementById('nav-drawer'),overlay=document.getElementById('nav-overlay');
+  if(navOpen&&drawer&&overlay){
+    navOpen.addEventListener('click',()=>{drawer.classList.add('open');overlay.classList.add('active');});
+    navClose.addEventListener('click',()=>{drawer.classList.remove('open');overlay.classList.remove('active');});
+    overlay.addEventListener('click',()=>{drawer.classList.remove('open');overlay.classList.remove('active');});
+  }
+})();
+</script>
+<script src="assets/fx-megaspec.js" defer></script>
+<script src="assets/fx-init.js" defer></script>
+<script src="assets/fx.js" defer></script>
+</body>
+</html>
