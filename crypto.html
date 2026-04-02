@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href="assets/fonts/Streamster.ttf" as="font" type="font/truetype" crossorigin>
+<link rel="preload" href="assets/global.css" as="style">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$1142 Token · 1142 Labs: Tomorrow's Solutions Today</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/global.css">
+<style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 6px currentColor}50%{opacity:.55;box-shadow:0 0 18px currentColor,0 0 32px currentColor}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+@keyframes contractGlow{0%,100%{box-shadow:0 0 20px rgba(74,222,128,.15),inset 0 0 20px rgba(74,222,128,.04)}50%{box-shadow:0 0 40px rgba(74,222,128,.3),inset 0 0 30px rgba(74,222,128,.08)}}
+
+/* ── CONTRACT BOX ── */
+.contract-box{
+  border:1px solid rgba(74,222,128,.4);
+  background:rgba(74,222,128,.03);
+  padding:32px;
+  position:relative;
+  animation:contractGlow 4s ease-in-out infinite;
+}
+.contract-box::before,.contract-box::after{
+  content:'';position:absolute;width:12px;height:12px;border-color:var(--green);border-style:solid;
+}
+.contract-box::before{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+.contract-box::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+
+.contract-address{
+  font-family:'Share Tech Mono',monospace;
+  font-size:clamp(10px,1.8vw,15px);
+  letter-spacing:.08em;
+  color:var(--green);
+  word-break:break-all;
+  line-height:1.6;
+  text-shadow:0 0 12px rgba(74,222,128,.4);
+}
+
+/* ── TOKEN STAT BOX ── */
+.token-stat{
+  text-align:center;
+  padding:24px 16px;
+  background:var(--void2);
+  border:1px solid var(--border-p);
+  transition:border-color .3s;
+}
+.token-stat:hover{border-color:rgba(74,222,128,.35);}
+.token-stat .val{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:clamp(20px,3vw,32px);
+  color:var(--green);
+  text-shadow:0 0 20px rgba(74,222,128,.5);
+  margin-bottom:8px;
+}
+.token-stat .lbl{
+  font-family:'Share Tech Mono',monospace;
+  font-size:7.5px;
+  letter-spacing:.25em;
+  color:var(--gray);
+  text-transform:uppercase;
+}
+
+/* ── HOW TO ADD ROW ── */
+.step-row{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  padding:20px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.step-num{
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  font-size:28px;
+  color:var(--green);
+  opacity:.35;
+  min-width:40px;
+  line-height:1;
+}
+.step-title{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  letter-spacing:.2em;
+  color:var(--white);
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.step-body{
+  font-family:'Rajdhani',sans-serif;
+  font-size:15px;
+  font-weight:300;
+  color:rgba(240,244,255,.55);
+  line-height:1.7;
+}
+.step-body code{
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--green);
+  background:rgba(74,222,128,.07);
+  border:1px solid rgba(74,222,128,.2);
+  padding:2px 8px;
+  letter-spacing:.05em;
+}
+
+/* ── COPY BUTTON ── */
+.copy-btn{
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  letter-spacing:.2em;
+  color:var(--green);
+  background:rgba(74,222,128,.07);
+  border:1px solid rgba(74,222,128,.3);
+  padding:6px 14px;
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.copy-btn:hover{background:rgba(74,222,128,.15);border-color:var(--green);}
+.copy-btn.copied{color:var(--cyan);border-color:var(--cyan);background:rgba(0,240,255,.07);}
+
+/* ── CHAIN BADGE ── */
+.chain-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;
+  color:var(--purple);background:rgba(139,92,246,.08);
+  border:1px solid rgba(139,92,246,.25);padding:6px 14px;text-transform:uppercase;
+}
+.chain-dot{width:7px;height:7px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px var(--purple);animation:pulse 2s infinite;}
+</style>
+<meta name="description" content="$1142 Token — the native cryptocurrency of 1142 Labs. Deployed on Polygon. Contract: 0x44b0A2e460EBC30199975291017CaC8723982F07">
+<meta name="keywords" content="1142 token, $1142, polygon cryptocurrency, 1142 labs crypto, ERC-20 token">
+<meta name="author" content="Cole EverDark · 1142 Labs">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#4ADE80">
+<link rel="canonical" href="https://1142labs.com/crypto">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://1142labs.com/crypto">
+<meta property="og:title" content="$1142 Token · 1142 Labs: Tomorrow's Solutions Today">
+<meta property="og:description" content="$1142 Token — the native cryptocurrency of 1142 Labs. Deployed on Polygon.">
+<meta property="og:image" content="https://1142labs.com/assets/images/og-1142labs.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:site_name" content="1142 Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="$1142 Token · 1142 Labs: Tomorrow's Solutions Today">
+<meta name="twitter:description" content="$1142 Token — the native cryptocurrency of 1142 Labs. Deployed on Polygon.">
+<meta name="twitter:image" content="https://1142labs.com/assets/images/og-1142labs.png">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"WebPage","name":"$1142 Token","url":"https://1142labs.com/crypto",
+  "description":"The $1142 token — native cryptocurrency of the 1142 Labs ecosystem. Deployed on Polygon.",
+  "author":{"@type":"Person","name":"Cole EverDark"}
+}
+</script>
+</head>
+<body data-page="lore">
+<div id="cursor"></div><div id="cursor-ring"></div>
+<div id="nav-overlay"></div>
+<aside id="nav-drawer">
+  <div class="drawer-header">
+    <a href="index.html" class="drawer-logo">
+      <img src="assets/images/1142_logo.png" alt="1142 Labs">
+      <div><span class="drawer-logo-name">1142 LABS</span><span class="drawer-logo-sub">Tomorrow's Solutions Today</span></div>
+    </a>
+    <button class="drawer-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
+  </div>
+  <nav class="drawer-nav">
+    <div class="drawer-section">
+      <div class="drawer-section-label">Core</div>
+      <a href="index.html" class="drawer-link"><span class="dl-icon">&#x2B21;</span>Home</a>
+      <a href="about.html" class="drawer-link"><span class="dl-icon">&#x25C8;</span>The Creator</a>
+      <a href="vision.html" class="drawer-link"><span class="dl-icon">&#x25C9;</span>Vision</a>
+      <a href="creators.html" class="drawer-link"><span class="dl-icon">&#x25CE;</span>Creators</a>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Research</div>
+      <a href="research_breakthroughs.html" class="drawer-link"><span class="dl-icon">&#x2697;</span>Research &amp; Breakthroughs</a>
+      <a href="1142_chemicals.html" class="drawer-link"><span class="dl-icon">&#x2B21;</span>Chemicals</a>
+      <a href="chemlog.html" class="drawer-link"><span class="dl-icon">&#x25C6;</span>Chem Log</a>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-label">Explore</div>
+      <a href="blog.html" class="drawer-link"><span class="dl-icon">&#x25A4;</span>Cole's Tab Corner</a>
+      <a href="crypto.html" class="drawer-link active"><span class="dl-icon">◈</span>$1142 Token</a>
+      <a href="calculators.html" class="drawer-link"><span class="dl-icon">&#x2699;</span>Calculators</a>
+      <a href="resources.html" class="drawer-link"><span class="dl-icon">&#x25C8;</span>Resources</a>
+      <a href="1142-toke-times.html" class="drawer-link"><span class="dl-icon">&#x231A;</span>Toke Times</a>
+      <a href="archive.html" class="drawer-link"><span class="dl-icon">&#x2584;</span>Archive</a>
+      <a href="posters.html" class="drawer-link"><span class="dl-icon">&#x25FC;</span>Posters</a>
+      <a href="socials.html" class="drawer-link"><span class="dl-icon">&#x25CE;</span>Network</a>
+    </div>
+  </nav>
+  <div class="drawer-foot">An EverDark Production &middot; Est. Dec 22, 2019</div>
+</aside>
+
+<nav class="hud" id="hud">
+  <a href="index.html" class="hud-logo">
+    <img src="assets/images/1142_logo.png" alt="1142 Labs">
+    <div class="hud-logo-text"><span class="hud-logo-name">1142 LABS</span><span class="hud-logo-sub">Tomorrow's Solutions Today</span></div>
+  </a>
+  <ul class="hud-nav">
+    <li class="has-mega">
+      <a href="research_breakthroughs.html" class="hud-link">Research <span class="hud-arrow">▾</span></a>
+      <div class="mega-panel"><div class="mega-grid">
+        <a href="research_breakthroughs.html" class="mega-item"><span class="mega-icon">⚗</span><span class="mega-label">Research Hub</span><span class="mega-desc">Studies &amp; breakthroughs</span></a>
+        <a href="1142_chemicals.html" class="mega-item"><span class="mega-icon">⬡</span><span class="mega-label">Chemicals DB</span><span class="mega-desc">Full compound database</span></a>
+        <a href="chemlog.html" class="mega-item"><span class="mega-icon">◆</span><span class="mega-label">Chem Log</span><span class="mega-desc">Research session logs</span></a>
+      </div></div>
+    </li>
+    <li class="has-mega">
+      <a href="about.html" class="hud-link">About <span class="hud-arrow">▾</span></a>
+      <div class="mega-panel"><div class="mega-grid">
+        <a href="about.html" class="mega-item"><span class="mega-icon">◈</span><span class="mega-label">The Creator</span><span class="mega-desc">Cole EverDark</span></a>
+        <a href="vision.html" class="mega-item"><span class="mega-icon">◉</span><span class="mega-label">Vision</span><span class="mega-desc">Mission &amp; future</span></a>
+        <a href="creators.html" class="mega-item"><span class="mega-icon">◎</span><span class="mega-label">Creators</span><span class="mega-desc">The persona matrix</span></a>
+        <a href="archive.html" class="mega-item"><span class="mega-icon">▤</span><span class="mega-label">Archive</span><span class="mega-desc">Logs &amp; manifesto</span></a>
+      </div></div>
+    </li>
+    <li class="has-mega">
+      <a href="blog.html" class="hud-link">Blog <span class="hud-arrow">▾</span></a>
+      <div class="mega-panel"><div class="mega-grid">
+        <a href="blog.html" class="mega-item"><span class="mega-icon">▤</span><span class="mega-label">Cole's Tab Corner</span><span class="mega-desc">Full post archive</span></a>
+        <a href="crypto.html" class="mega-item"><span class="mega-icon">◈</span><span class="mega-label">$1142 Token</span><span class="mega-desc">Polygon cryptocurrency</span></a>
+        <a href="calculators.html" class="mega-item"><span class="mega-icon">⚙</span><span class="mega-label">Calculators</span><span class="mega-desc">Tools &amp; utilities</span></a>
+        <a href="resources.html" class="mega-item"><span class="mega-icon">◈</span><span class="mega-label">Resources</span><span class="mega-desc">References &amp; links</span></a>
+        <a href="1142-toke-times.html" class="mega-item"><span class="mega-icon">🕐</span><span class="mega-label">Toke Times</span><span class="mega-desc">The ritual timeline</span></a>
+        <a href="posters.html" class="mega-item"><span class="mega-icon">◼</span><span class="mega-label">Posters</span><span class="mega-desc">EverDark visuals</span></a>
+      </div></div>
+    </li>
+  </ul>
+  <div class="hud-right">
+    <div class="hud-status"><div class="hud-dot" style="background:var(--green);box-shadow:0 0 8px var(--green);"></div><span style="color:var(--green);">TOKEN LIVE</span></div>
+    <button class="hud-hamburger" id="nav-open" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section style="position:relative;min-height:60vh;display:flex;flex-direction:column;justify-content:center;padding:120px 48px 80px;overflow:hidden;">
+  <div class="vortex-grid" style="opacity:.4;"></div>
+  <div class="orb orb-c" style="opacity:.35;background:var(--green);"></div>
+  <div class="orb orb-p" style="opacity:.25;"></div>
+  <div style="position:relative;z-index:1;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.5em;color:var(--green);text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp .8s .1s forwards;">
+      Polygon Network · ERC-20 · Chain ID 137
+    </div>
+    <h1 style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(48px,8vw,110px);line-height:.9;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fadeUp .9s .25s forwards;">
+      <span style="display:block;-webkit-text-stroke:1.5px rgba(74,222,128,.4);color:transparent;">The</span>
+      <span style="display:block;color:var(--green);text-shadow:0 0 40px rgba(74,222,128,.6),0 0 80px rgba(74,222,128,.3);" class="glitch" data-text="$1142">$1142</span>
+      <span style="display:block;color:var(--white);">Token</span>
+    </h1>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:300;color:rgba(240,244,255,.55);max-width:560px;line-height:1.85;margin-bottom:32px;opacity:0;animation:fadeUp .9s .4s forwards;">The native cryptocurrency of the 1142 Labs ecosystem. Deployed on Polygon for low fees, fast settlement, and permanent on-chain presence. The financial layer of the 1142 architecture is live.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .55s forwards;">
+      <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07" target="_blank" rel="noopener" class="btn-neon" style="background:rgba(74,222,128,.08);border-color:var(--green);color:var(--green);">View on PolygonScan ↗</a>
+      <a href="#how-to-buy" class="btn-neon" style="background:transparent;">How to Get $1142 ↓</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-strip"><div class="marquee-track">
+  <div class="marquee-item" style="color:var(--green);">$1142 TOKEN<span class="sep" style="color:var(--green);">◆</span>POLYGON NETWORK<span class="sep" style="color:var(--green);">◆</span>ERC-20<span class="sep" style="color:var(--green);">◆</span>CHAIN ID 137<span class="sep" style="color:var(--green);">◆</span>COGNITIVE LIBERATION CURRENCY<span class="sep" style="color:var(--green);">◆</span>1142 LABS<span class="sep" style="color:var(--green);">◆</span>COLE EVERDARK<span class="sep" style="color:var(--green);">◆</span></div>
+  <div class="marquee-item" style="color:var(--green);">$1142 TOKEN<span class="sep" style="color:var(--green);">◆</span>POLYGON NETWORK<span class="sep" style="color:var(--green);">◆</span>ERC-20<span class="sep" style="color:var(--green);">◆</span>CHAIN ID 137<span class="sep" style="color:var(--green);">◆</span>COGNITIVE LIBERATION CURRENCY<span class="sep" style="color:var(--green);">◆</span>1142 LABS<span class="sep" style="color:var(--green);">◆</span>COLE EVERDARK<span class="sep" style="color:var(--green);">◆</span></div>
+</div></div>
+
+<!-- ── CONTRACT ADDRESS ── -->
+<section class="section section-void" id="contract">
+  <div class="section-label reveal" style="color:var(--green);">On-Chain · Verified Contract</div>
+  <h2 class="section-title reveal">Contract <span style="color:var(--green);">Address</span></h2>
+  <p class="section-sub reveal">The permanent address of the $1142 token on the Polygon PoS blockchain. Always verify this address before transacting.</p>
+
+  <div style="max-width:820px;margin:48px auto 0;" class="reveal d1">
+    <div class="contract-box">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.4em;color:var(--green);text-transform:uppercase;margin-bottom:16px;opacity:.6;">POLYGON MAINNET · ERC-20 CONTRACT</div>
+      <div class="contract-address" id="contract-addr">0x44b0A2e460EBC30199975291017CaC8723982F07</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center;">
+        <button class="copy-btn" id="copy-btn" onclick="copyContract()">⧉ Copy Address</button>
+        <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07" target="_blank" rel="noopener" class="copy-btn" style="text-decoration:none;">⬡ PolygonScan ↗</a>
+        <a href="https://app.uniswap.org/#/swap?outputCurrency=0x44b0A2e460EBC30199975291017CaC8723982F07&chain=polygon" target="_blank" rel="noopener" class="copy-btn" style="text-decoration:none;color:var(--purple);border-color:rgba(139,92,246,.35);background:rgba(139,92,246,.07);">⇄ Trade on Uniswap ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),transparent);opacity:.5;"></div>
+
+<!-- ── TOKEN STATS ── -->
+<section class="section section-dark">
+  <div class="section-label reveal" style="color:var(--green);">Token Specifications</div>
+  <h2 class="section-title reveal">Token <span style="color:var(--green);">Data</span></h2>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:48px;">
+    <div class="token-stat reveal d1">
+      <div class="val">$1142</div>
+      <div class="lbl">Symbol</div>
+    </div>
+    <div class="token-stat reveal d2">
+      <div class="val" style="color:var(--purple);">ERC-20</div>
+      <div class="lbl">Token Standard</div>
+    </div>
+    <div class="token-stat reveal d3">
+      <div class="val" style="color:var(--cyan);">137</div>
+      <div class="lbl">Chain ID</div>
+    </div>
+    <div class="token-stat reveal d1">
+      <div class="val" style="color:var(--pink);">POL</div>
+      <div class="lbl">Gas Token</div>
+    </div>
+  </div>
+
+  <div style="margin-top:24px;border:1px solid rgba(74,222,128,.15);background:rgba(74,222,128,.02);padding:28px 32px;" class="reveal d2">
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+        <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.4);">Network</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--white);">Polygon PoS Mainnet</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+        <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.4);">Contract</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);">0x44b0...82F07</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+        <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.4);">Token Type</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--white);">ERC-20 Fungible Token</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+        <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.4);">Block Explorer</span>
+        <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07" target="_blank" rel="noopener" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);text-decoration:none;">polygonscan.com ↗</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);">
+        <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.4);">Creator</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--white);">Cole EverDark · 1142 Labs</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+        <span style="font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:300;color:rgba(240,244,255,.4);">Status</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green);display:flex;align-items:center;gap:6px;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite;"></span>LIVE ON MAINNET</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--purple),var(--cyan),transparent);opacity:.4;"></div>
+
+<!-- ── WHY POLYGON ── -->
+<section class="section section-void">
+  <div class="section-label reveal">Infrastructure Choice</div>
+  <h2 class="section-title reveal">Why <span style="color:var(--purple);">Polygon</span></h2>
+  <p class="section-sub reveal">Not every chain deserves a 1142 deployment. Polygon earned it.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:48px;">
+
+    <div class="feat-card reveal d1"><div class="feat-top-line" style="background:var(--green);"></div>
+      <div class="feat-num" style="color:var(--green);">01 · SPEED</div>
+      <span class="feat-icon">⚡</span>
+      <div class="feat-title" style="color:var(--green);">~2 Second Finality</div>
+      <p class="feat-body">Polygon processes transactions in seconds. No waiting for confirmations while the research keeps moving. Built for velocity — the same principle 1142 operates on.</p>
+    </div>
+
+    <div class="feat-card reveal d2"><div class="feat-top-line" style="background:var(--cyan);"></div>
+      <div class="feat-num" style="color:var(--cyan);">02 · COST</div>
+      <span class="feat-icon">◈</span>
+      <div class="feat-title" style="color:var(--cyan);">Near-Zero Gas Fees</div>
+      <p class="feat-body">Gas on Polygon costs fractions of a cent. That means $1142 transfers stay accessible regardless of wallet size — the currency of cognitive liberation doesn't gatekeep on fees.</p>
+    </div>
+
+    <div class="feat-card reveal d3"><div class="feat-top-line" style="background:var(--purple);"></div>
+      <div class="feat-num" style="color:var(--purple);">03 · ECOSYSTEM</div>
+      <span class="feat-icon">⬡</span>
+      <div class="feat-title" style="color:var(--purple);">EVM Compatible</div>
+      <p class="feat-body">Full Ethereum Virtual Machine compatibility. Works with MetaMask, Coinbase Wallet, Trust Wallet, and every major DeFi protocol. Add the token in 30 seconds. No special software required.</p>
+    </div>
+
+    <div class="feat-card reveal d1"><div class="feat-top-line" style="background:var(--pink);"></div>
+      <div class="feat-num" style="color:var(--pink);">04 · PERMANENCE</div>
+      <span class="feat-icon">∞</span>
+      <div class="feat-title" style="color:var(--pink);">On-Chain Forever</div>
+      <p class="feat-body">The contract is immutable. Once deployed, $1142 exists permanently on the Polygon blockchain — no server to take down, no platform to ban it, no authority to erase it. Inevitable by design.</p>
+    </div>
+
+    <div class="feat-card reveal d2"><div class="feat-top-line" style="background:var(--green);"></div>
+      <div class="feat-num" style="color:var(--green);">05 · DEFI READY</div>
+      <span class="feat-icon">⇄</span>
+      <div class="feat-title" style="color:var(--green);">Tradeable on DEXs</div>
+      <p class="feat-body">$1142 is tradeable on Uniswap, QuickSwap, and any Polygon-compatible DEX. Liquidity is the pulse of a living token — and $1142 is alive on the most active EVM sidechain.</p>
+    </div>
+
+    <div class="feat-card reveal d3" style="background:rgba(74,222,128,.03);border-color:rgba(74,222,128,.2);"><div class="feat-top-line" style="background:var(--green);"></div>
+      <div class="feat-num" style="color:var(--green);">06 · INDEPENDENCE</div>
+      <span class="feat-icon">🔓</span>
+      <div class="feat-title" style="color:var(--green);">Self-Sovereign Finance</div>
+      <p class="feat-body">No banks. No intermediaries. No permission required. $1142 is the financial expression of the same principle that built this entire ecosystem — total self-reliance and autonomy.</p>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--green),var(--cyan),transparent);opacity:.5;"></div>
+
+<!-- ── HOW TO GET $1142 ── -->
+<section class="section section-dark" id="how-to-buy">
+  <div class="section-label reveal" style="color:var(--green);">Instructions · MetaMask / Any EVM Wallet</div>
+  <h2 class="section-title reveal">How to Get <span style="color:var(--green);">$1142</span></h2>
+  <p class="section-sub reveal">Add it to your wallet. Trade it on a DEX. Hold it as a piece of the 1142 archive.</p>
+
+  <div style="max-width:700px;margin-top:48px;">
+
+    <div class="step-row reveal">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">Add Polygon Network to Your Wallet</div>
+        <div class="step-body">Open MetaMask (or any EVM wallet). Add Polygon PoS Mainnet:<br>
+          Network: <code>Polygon Mainnet</code> · RPC: <code>https://polygon-rpc.com</code> · Chain ID: <code>137</code> · Symbol: <code>POL</code> · Explorer: <code>polygonscan.com</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row reveal d1">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">Fund With POL (For Gas)</div>
+        <div class="step-body">You need a small amount of POL (Polygon's native token) to pay gas. Buy POL on any major exchange (Coinbase, Kraken, Binance) and send to your Polygon address. Gas costs pennies.</div>
+      </div>
+    </div>
+
+    <div class="step-row reveal d2">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">Add the $1142 Token to Your Wallet</div>
+        <div class="step-body">In MetaMask, go to <code>Import Tokens</code> → paste the contract address:<br>
+          <code>0x44b0A2e460EBC30199975291017CaC8723982F07</code><br>
+          The token will auto-populate its name and symbol. Click Add.
+        </div>
+      </div>
+    </div>
+
+    <div class="step-row reveal d3">
+      <div class="step-num">04</div>
+      <div>
+        <div class="step-title">Trade on a Decentralized Exchange</div>
+        <div class="step-body">Go to <a href="https://app.uniswap.org/#/swap?outputCurrency=0x44b0A2e460EBC30199975291017CaC8723982F07&chain=polygon" target="_blank" rel="noopener" style="color:var(--green);">Uniswap on Polygon ↗</a> or QuickSwap. Connect your wallet. Swap POL or USDC for $1142. Confirm the transaction. Done.</div>
+      </div>
+    </div>
+
+    <div class="step-row reveal d1" style="border-bottom:none;">
+      <div class="step-num">05</div>
+      <div>
+        <div class="step-title">Verify Everything On-Chain</div>
+        <div class="step-body">Every transaction is publicly visible. Check the contract, token holders, transfer history, and all on-chain activity at <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07" target="_blank" rel="noopener" style="color:var(--green);">polygonscan.com ↗</a>. Trustless by design.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--purple),transparent);opacity:.4;"></div>
+
+<!-- ── THE PHILOSOPHY ── -->
+<section class="section section-void">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;">
+    <div>
+      <div class="section-label reveal" style="color:var(--green);">Financial Architecture · Why a Token</div>
+      <h2 class="section-title reveal">The <span style="color:var(--green);">Vision</span></h2>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.65);line-height:1.85;margin-bottom:20px;" class="reveal">1142 Labs was always going to have its own currency. The research framework, the persona matrix, the 12-hour ritual — all of it points toward a self-sustaining ecosystem that runs on its own terms.</p>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.65);line-height:1.85;margin-bottom:20px;" class="reveal d1">$1142 is the financial layer of that ecosystem. It connects the research archive, the game studio, the chemical database, and the broader 1142 community into a single on-chain economic unit. Holders participate in something built from the ground up — no VC funding, no institutional backing, no compromise.</p>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.65);line-height:1.85;margin-bottom:28px;" class="reveal d2">Combined with the ASIC Bitcoin mining infrastructure currently being built — $1142 and BTC together form the financial foundation of the Fortress HQ. Independent. Permanent. Inevitable.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" class="reveal d3">
+        <span style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:var(--green);background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.2);padding:4px 12px;">SELF-SOVEREIGN</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:var(--cyan);background:rgba(0,240,255,.07);border:1px solid rgba(0,240,255,.2);padding:4px 12px;">ON-CHAIN FOREVER</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:var(--purple);background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.22);padding:4px 12px;">POLYGON NATIVE</span>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:.15em;color:var(--pink);background:rgba(236,72,153,.07);border:1px solid rgba(236,72,153,.2);padding:4px 12px;">NO INTERMEDIARIES</span>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;" class="reveal d1">
+      <div style="border:1px solid rgba(74,222,128,.2);background:rgba(74,222,128,.02);padding:24px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--green);margin-bottom:10px;">QUICK LINKS</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07" target="_blank" rel="noopener" style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(240,244,255,.6);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;">PolygonScan Contract Page <span style="color:var(--green);">↗</span></a>
+          <a href="https://app.uniswap.org/#/swap?outputCurrency=0x44b0A2e460EBC30199975291017CaC8723982F07&chain=polygon" target="_blank" rel="noopener" style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(240,244,255,.6);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;">Uniswap — Swap for $1142 <span style="color:var(--purple);">↗</span></a>
+          <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07#balances" target="_blank" rel="noopener" style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(240,244,255,.6);text-decoration:none;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;justify-content:space-between;align-items:center;">Token Holders List <span style="color:var(--green);">↗</span></a>
+          <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07#transactions" target="_blank" rel="noopener" style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(240,244,255,.6);text-decoration:none;padding:8px 0;display:flex;justify-content:space-between;align-items:center;">Transfer History <span style="color:var(--green);">↗</span></a>
+        </div>
+      </div>
+      <div style="border:1px solid rgba(236,72,153,.15);background:rgba(236,72,153,.02);padding:20px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.3em;color:var(--pink);margin-bottom:10px;">⚠ DISCLAIMER</div>
+        <p style="font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:300;color:rgba(240,244,255,.4);line-height:1.65;">$1142 is a utility token created for the 1142 Labs ecosystem. This is not financial advice. Cryptocurrency involves risk. Always verify the contract address independently before any transaction.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA CLOSING ── -->
+<section class="section section-darker" style="text-align:center;">
+  <div class="reveal" style="max-width:600px;margin:0 auto;">
+    <div style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(56px,12vw,110px);color:var(--green);text-shadow:0 0 40px rgba(74,222,128,.5),0 0 80px rgba(74,222,128,.2);line-height:1;margin-bottom:20px;">$1142</div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.45em;color:var(--gray);margin-bottom:20px;">THE CURRENCY OF COGNITIVE LIBERATION</div>
+    <p style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:300;color:rgba(240,244,255,.45);line-height:1.8;margin-bottom:28px;">Contract: <span style="color:var(--green);">0x44b0A2e460EBC30199975291017CaC8723982F07</span><br>Network: Polygon PoS Mainnet · Chain ID: 137</p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://polygonscan.com/token/0x44b0A2e460EBC30199975291017CaC8723982F07" target="_blank" rel="noopener" class="btn-neon" style="background:rgba(74,222,128,.08);border-color:var(--green);color:var(--green);">PolygonScan ↗</a>
+      <a href="vision.html" class="btn-neon">The Full Vision →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-glow-c"></div>
+  <div class="footer-glow-p"></div>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="footer-brand-logo">
+        <img src="assets/images/1142_logo.png" alt="1142 Labs">
+        <div><span class="footer-brand-name">1142 LABS</span><span class="footer-brand-tagline">Tomorrow's Solutions Today</span></div>
+      </a>
+      <p class="footer-brand-desc">A spiritual jailbreak. A neurodivergent fortress. A scientific underground. Est. Dec 22, 2019.</p>
+      <div class="footer-tags"><span class="footer-tag">⚗ Research</span><span class="footer-tag">🧠 Neurodivergent</span><span class="footer-tag">🔓 Liberation</span></div>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title">Research</h4>
+      <ul>
+        <li><a href="research_breakthroughs.html">Research Hub</a></li>
+        <li><a href="1142_chemicals.html">Chemicals DB</a></li>
+        <li><a href="chemlog.html">Chem Log</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title">About</h4>
+      <ul>
+        <li><a href="about.html">The Creator</a></li>
+        <li><a href="about.html#origin-story">Origin Story</a></li>
+        <li><a href="about.html#personas">Persona Matrix</a></li>
+        <li><a href="vision.html">Vision</a></li>
+        <li><a href="creators.html">Creators</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col-title">Explore</h4>
+      <ul>
+        <li><a href="blog.html">Cole's Tab Corner</a></li>
+        <li><a href="crypto.html">$1142 Token</a></li>
+        <li><a href="calculators.html">Calculators</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="1142-toke-times.html">Toke Times</a></li>
+        <li><a href="archive.html">Archive</a></li>
+        <li><a href="posters.html">Posters</a></li>
+        <li><a href="socials.html">Network</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-left">
+      <p>© 1142 Labs · Est. Dec 22nd 2019</p>
+      <p class="footer-katrina">In loving memory of Katrina Jade Mutch Hasler ♥</p>
+    </div>
+    <div class="footer-everdark"><div class="footer-dot"></div>An EverDark Production</div>
+  </div>
+</footer>
+
+<script>
+function copyContract(){
+  const addr = '0x44b0A2e460EBC30199975291017CaC8723982F07';
+  navigator.clipboard.writeText(addr).then(()=>{
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='⧉ Copy Address';btn.classList.remove('copied');}, 2000);
+  }).catch(()=>{
+    // Fallback
+    const el = document.createElement('textarea');
+    el.value = addr; document.body.appendChild(el);
+    el.select(); document.execCommand('copy');
+    document.body.removeChild(el);
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='⧉ Copy Address';btn.classList.remove('copied');}, 2000);
+  });
+}
+(function(){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  if(!cur||!ring)return;
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.feat-card,.token-stat,.contract-box').forEach(el=>{
+    el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+  });
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  document.querySelectorAll('.glitch').forEach(el=>{if(!el.dataset.text)el.dataset.text=el.textContent.trim();});
+  const navOpen=document.getElementById('nav-open'),navClose=document.getElementById('nav-close'),drawer=document.getElementById('nav-drawer'),overlay=document.getElementById('nav-overlay');
+  if(navOpen&&drawer&&overlay){
+    navOpen.addEventListener('click',()=>{drawer.classList.add('open');overlay.classList.add('active');});
+    navClose.addEventListener('click',()=>{drawer.classList.remove('open');overlay.classList.remove('active');});
+    overlay.addEventListener('click',()=>{drawer.classList.remove('open');overlay.classList.remove('active');});
+  }
+})();
+</script>
+<script src="assets/fx-megaspec.js" defer></script>
+<script src="assets/fx-init.js" defer></script>
+<script src="assets/fx.js" defer></script>
+</body>
+</html>
